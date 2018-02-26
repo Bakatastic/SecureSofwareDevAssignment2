@@ -22,21 +22,21 @@
 					$username = sanitize($_POST["username"]);
 					//Check input
 					if(!preg_match("/^[a-zA-Z0-9]*$/", $username)){
-						$usernameErr = "Only letters allowed<br>";
+						$usernameErr = "Only letters and allowed<br>";
 						$fail = 1;
 					}
 				}
 				
-				//Email regex
+				//Password regex
 				if(empty($_POST["password"])){
-					$emailErr = "Password is required<br>";
+					$passwordErr = "Password is required<br>";
 					$fail = 1;
 				}
 				else{
-					$email = sanitize($_POST["email"]);
+					$password = sanitize($_POST["password"]);
 					//Check input
-					if(!preg_match("/^[a-zA-Z0-9.!#$%&'*+=?^_`{|}~-]{8,}$/", $email)){
-						$emailErr = "Enter a proper password<br>";
+					if(!preg_match("/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/", $password)){
+						$passwordErr = "Enter a password with at least 8 letters and numbers<br>";
 						$fail = 1;
 					}
 				}
@@ -87,10 +87,7 @@
 		</table>
 		<?php
 			echo $usernameErr;
-			echo $emailErr;
-			echo $addressErr;
-			echo $phoneErr;
-			echo $bioErr;
+			echo $passwordErr;
 		?>
 		<a href="listUser.php">User List<a>
 	</body>
