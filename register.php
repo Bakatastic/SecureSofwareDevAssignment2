@@ -1,0 +1,97 @@
+<html>
+	<head>
+		<title>
+			Register
+		</title>
+	</head>
+	<body>
+		<h1 style="text-align: center;">Create New User</h1>
+		<?php
+			//Set variables to empty values
+			$usernameErr = $paswordErr = "";
+			$username = $password= "";
+			$fail = 0;
+			
+			if($_SERVER["REQUEST_METHOD"] == "POST"){
+				//Username regex
+				if(empty($_POST["username"])){
+					$usernameErr = "Username is required<br>";
+					$fail = 1;
+				}
+				else{
+					$username = sanitize($_POST["username"]);
+					//Check input
+					if(!preg_match("/^[a-zA-Z0-9]*$/", $username)){
+						$usernameErr = "Only letters allowed<br>";
+						$fail = 1;
+					}
+				}
+				
+				//Email regex
+				if(empty($_POST["password"])){
+					$emailErr = "Password is required<br>";
+					$fail = 1;
+				}
+				else{
+					$email = sanitize($_POST["email"]);
+					//Check input
+					if(!preg_match("/^[a-zA-Z0-9.!#$%&'*+=?^_`{|}~-]{8,}$/", $email)){
+						$emailErr = "Enter a proper password<br>";
+						$fail = 1;
+					}
+				}
+				
+				//Add to database if regex check passes
+				if($fail == 0){
+					$conn = pg_connect("host=localhost dbname=a1_users user=postgres password=password");
+					$query = "INSERT INTO users VALUES ('$_POST[username]','$_POST[password]');";
+					$result = pg_query($query);
+					echo "User added!";
+				}
+			}
+			
+			function sanitize($input){
+				$input = trim($input);
+				$input = stripslashes($input);
+				$input = htmlspecialchars($input);
+				return $input;
+			}
+		?>
+		<table>
+			<!-- Will redirect to self-->
+			<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST">
+				<tr>
+					<td align=right>
+						Username:
+					</td>
+					<td>
+						<input type="text" name="username"/>
+					</td>
+				</tr>
+				<tr>
+					<td align=right>
+						Password:
+					</td>
+					<td>
+						<input type="text" name="password"/>
+					</td>
+				</tr>
+				<tr>
+					<td>
+					</td>
+					<td align=center>
+						<input type="submit"/>
+					</td>
+				</tr>
+			</form>
+		</table>
+		<?php
+			echo $usernameErr;
+			echo $emailErr;
+			echo $addressErr;
+			echo $phoneErr;
+			echo $bioErr;
+		?>
+		<a href="listUser.php">User List<a>
+	</body>
+</html>
