@@ -5,7 +5,7 @@
 		</title>
 	</head>
 	<body>
-		<h1 style="text-align: center;">Create New User</h1>
+		<h1>Create New User</h1>
 		<?php
 			//Set variables to empty values
 			$usernameErr = $paswordErr = "";
@@ -39,11 +39,13 @@
 						$passwordErr = "Enter a password with at least 8 letters and numbers<br>";
 						$fail = 1;
 					}
+					//Encrypt
+					$password = sha1($password);
 				}
 				
 				//Add to database if regex check passes
 				if($fail == 0){
-					$conn = pg_connect("host=localhost dbname=a1_users user=postgres password=password");
+					$conn = pg_connect("host=localhost dbname=a2 user=postgres password=password");
 					$query = "INSERT INTO users VALUES ('$_POST[username]','$_POST[password]');";
 					$result = pg_query($query);
 					echo "User added!";
