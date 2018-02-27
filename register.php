@@ -65,7 +65,6 @@
 				
 				//Add to database if regex check passes
 				if($fail == 0){
-					alert("pass");
 					$conn = pg_connect("host=localhost dbname=a2 user=postgres password=password");
 					if ($conn) {
 						$query = "INSERT INTO users (username, password, email) VALUES ('$_POST[username]','$_POST[password]','%_POST[email]');";
@@ -77,7 +76,7 @@
 					
 				} else 
 				{
-					alert("fail");
+					alert("Failed");
 				}
 			}
 			
