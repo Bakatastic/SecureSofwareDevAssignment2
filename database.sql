@@ -1,8 +1,8 @@
 DROP DATABASE a2;
 CREATE DATABASE a2;
-/c a2;
+\c a2;
 
-REATE TABLE users (
+CREATE TABLE users (
     username	VARCHAR(20)			NOT NULL Primary Key,
     password	VARCHAR(40)			NOT NULL,
 	email		VARCHAR(100)		NOT NULL,
