@@ -11,13 +11,13 @@
 	</style>
 	<?php 
 		if (($_SESSION["username"]) == null) {
-			header("Location: login.php"); /* Redirect browser */
+			header("Location: login.php");
 			exit();
 		}
 	?>
 	</head>
 	<body>
-		<h3>User : <?php echo $_SESSION["username"] ?></h3>
+		<h3>User: <?php echo $_SESSION["username"] ?></h3>
 		<form action="login.php" method="POST" >
 			<table>
 				<tr>
