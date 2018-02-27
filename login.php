@@ -1,3 +1,10 @@
+<?php
+	session_start();
+    if (($_SESSION["username"]) != null) {
+            header("Location: login.php");
+            exit();
+     }
+?>
 <html>
 	<head>
 	<title>Login</title>
@@ -52,6 +59,10 @@
 						if($username == $user[0] && $password == $user[1]){
 							//Login stuff
 							echo "Logged in!";
+							$_SESSION["username"] = $_POST["username"];
+							//Send to another page
+							header("Location: profile.php");
+							exit();
 						}
 					}
 					//Place failed to login message here somewhere
@@ -66,29 +77,33 @@
 			}
 		?>
 			<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST">
-				<tr>
-					<td align=right>
-						Username:
-					</td>
-					<td>
-						<input type="text" name="username"/>
-					</td>
-				</tr>
-				<tr>
-					<td align=right>
-						Password:
-					</td>
-					<td>
-						<input type="text" name="password"/>
-					</td>
-				</tr>
-				<tr>
-					<td>
-					</td>
-					<td align=center>
-						<input type="submit"/>
-					</td>
-				</tr>
+				<table>
+					<tr>
+						<td align=right>
+							Username:
+						</td>
+						<td>
+							<input type="text" name="username"/>
+						</td>
+					</tr>
+					<tr>
+						<td align=right>
+							Password:
+						</td>
+						<td>
+							<input type="text" name="password"/>
+						</td>
+					</tr>
+					<tr>
+						<td>
+						</td>
+						<td align=center>
+							<input type="submit"/>
+						</td>
+					</tr>
+				</table>
 			</form>
+			<br>
+			<a href="forgot.php">Forgot Password</a>
 	</body>
 </html>
