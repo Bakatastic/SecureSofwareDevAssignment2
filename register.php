@@ -65,23 +65,9 @@
 				
 				//Add to database if regex check passes
 				if($fail == 0){
-<<<<<<< HEAD
-					alert("pass");
-					
-					$default_avatar = "default.jpg";
-					$image = fopen($default_avatar, 'r') or die("bad image\n");
-					$data = fread($image, filesize($default_avatar));
-					$upload_data = pg_escape_bytea($data);
-					fclose($image);
-					
-					$conn = pg_connect("host=localhost dbname=a2 user=postgres password=password");
-					if ($conn) {
-						$query = "INSERT INTO users (username, password, email, avatar) VALUES ('$_POST[username]','$_POST[password]','$_POST[email]', '$upload_data');";
-=======
 					$conn = pg_connect("host=localhost dbname=a2 user=postgres password=password");
 					if ($conn) {
 						$query = "INSERT INTO users (username, password, email) VALUES ('$_POST[username]','$_POST[password]','$_POST[email]');";
->>>>>>> 40b59d805a90319b9aacae74704a2c072b0c15b5
 						$result = pg_query($query);
 						alert("User Added");
 					} else {
