@@ -26,7 +26,7 @@
 			<table>
 				<tr>
 					<td>Avatar: </td>
-					<td>The last avatar</td>
+					<td><?php echo $row[3] ?></td>
 				</tr>
 				<tr>
 					<td>Email: </td>
