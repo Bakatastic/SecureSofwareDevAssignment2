@@ -62,8 +62,7 @@
 					alert("pass");
 					$conn = pg_connect("host=localhost dbname=a2 user=postgres password=password");
 					if ($conn) {
-						//alert("conn pass");
-						$query = "INSERT INTO users (username, password) VALUES ('$_POST[username]','$_POST[password]');";
+						$query = "INSERT INTO users (username, password, email) VALUES ('$_POST[username]','$_POST[password]','%_POST[email]');";
 						$result = pg_query($query);
 						alert("User Added");
 					} else {
