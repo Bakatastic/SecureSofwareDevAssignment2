@@ -1,8 +1,7 @@
 <?php
 	session_start();
     if (($_SESSION["username"]) != null) {
-            header("Location: login.php");
-            exit();
+            session_destroy();
      }
 ?>
 <html>
@@ -65,6 +64,7 @@
 							exit();
 						}
 					}
+					echo "Login failed!";
 					//Place failed to login message here somewhere
 				}
 			}
@@ -91,7 +91,7 @@
 							Password:
 						</td>
 						<td>
-							<input type="text" name="password"/>
+							<input type="password" name="password"/>
 						</td>
 					</tr>
 					<tr>
@@ -105,5 +105,10 @@
 			</form>
 			<br>
 			<a href="forgot.php">Forgot Password</a>
+			
+			<?php
+				echo $usernameErr;
+				echo $passwordErr;
+			?>
 	</body>
 </html>
