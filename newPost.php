@@ -1,44 +1,75 @@
-<!--
-Create a new blog post (or edit an existing post). The user should be able to create a blog post that will be published to the main blog page. Blog posts should be capable of containing images, hyperlinks and videos as well as an array of formatting options for headings, lists, etc. Ideally, a blog author should be able to write HTML or Markup to create a post.
--->
+<?php
+	session_start();
+	if (($_SESSION["username"]) == null) {
+			header("Location: login.php");
+			exit();
+		}
+?>
 <html>
 	<head>
-	<title>New Post</title>
+	<title>Login</title>
 	<style type="text/css">
 	</style>
 	</head>
 	<body>
-		<h3>Create a Post</h3>
-		<form action="login.php" method="POST" >
-			<table>
-				<tr>
-					<td>Subject: </td>
-					<td><input type="text" name="userInput" required /></td>
-				</tr>
-				<tr>
-					<td>Content: </td>
-					<td><textarea name="content" cols="40" rows="5"></textarea></td>
-				</tr>
-				<tr>
-					<td><input type="submit" name="submit" /></td>
-					<td></td>
-				</tr>			
-			</table>
-			<?php
-				//if this page loads up as a POST (after somebody clicks submit
-				if (isset($_POST['submit'])) {  
-					//add post to db here
-					$conn = pg_connect("host=localhost dbname=tempDB user=tempUser password=tempPsw");
-					$query = "INSERT INTO table VALUES ();";
-					$result = pg_query($query); 
-				
-					if (/*validated*/) {
-						//I think this can be used to forward the page to the blog page
-						header('Location: target-page.php');
-						exit();
+		<h1>New Post</h1>
+		<?php
+			//Set variables to empty values
+			$postErr = "";
+			$posttext = "";
+			$fail = 0;
+			
+			if($_SERVER["REQUEST_METHOD"] == "POST"){
+				//Password regex to sanitize input before comparing database
+				if(empty($_POST["posttext"])){
+					$postErr = "Enter a post<br>";
+					$fail = 1;
+				}
+				else{
+					$posttext = sanitize($_POST["posttext"]);
+				}
+				//Add to database if regex check passes
+				if($fail == 0){
+					$conn = pg_connect("host=localhost dbname=a2 user=postgres password=password");
+					if($conn){
+						$query = "INSERT INTO posts (posttext, username) VALUES ('$posttext','$_SESSION[username]');";
+						$result = pg_query($query);
+					}
+					else {
+						alert("conn failed");
 					}
 				}
+			}
+			
+			function sanitize($input){
+				$input = trim($input);
+				$input = stripslashes($input);
+				$input = htmlspecialchars($input);
+				return $input;
+			}
+		?>
+			<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST">
+				<table>
+					<tr>
+						<td align=right>
+							Post:
+						</td>
+						<td>
+							<input type="text" name="posttext"/>
+						</td>
+					</tr>
+					<tr>
+						<td>
+						</td>
+						<td align=center>
+							<input type="submit"/>
+						</td>
+					</tr>
+				</table>
+			</form>
+			<br>
+			<?php
+				echo $postErr;
 			?>
-		</form>
 	</body>
 </html>
