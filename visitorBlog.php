@@ -5,6 +5,9 @@ The main blog page. Visitors to the blog should be able to view a summary of rec
 Reference on expanding/closing blog post using jquery
 http://jsfiddle.net/eK8X5/13261/
 -->
+<?php
+	session_start();
+?>
 <html>
 	<head>
 	<title>View Blogs</title>
@@ -28,16 +31,27 @@ http://jsfiddle.net/eK8X5/13261/
 	</style>
 	</head>
 	<body>
-		<div class="container">
-			<div class="avatar">
-				<img src="pulpitrock.jpg" alt="Mountain View">
-			</div>
-			<div class="HeaderText">
-				<h3>TRDFJABGS</h3>
-			</div>
-			<div class="textContent">
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-			</div>
-		</div>
+
+		<?php
+		$conn = pg_connect("host=localhost dbname=a2 user=postgres password=password");
+		$result = pg_query($conn, "SELECT * FROM posts");
+		while($row = pg_fetch_row($result)){
+			//MISSING AVATAR PLEASE ADD
+			echo "<div style='border-style:solid; border-width:1px;'> INSERT AVATAR HERE " . $row[2] . "<br>" . $row[1] . "</div><br>";
+			//echo "<tr><td>" . $row[2] . "</td><td>" . $row[1] . "</td></tr>";
+		}
+		/*
+		<?php 
+						$conn = pg_connect("host=localhost dbname=a1_users user=postgres password=password");
+						
+						$result = pg_query($conn, "SELECT * FROM users");
+						
+						while ($row = pg_fetch_row($result))
+						{
+							echo "<tr><td><a href='userDetails.php?username=" . $row[0]. "'>" . $row[0] . "</a></td><td>" . $row[1] . "</td><td>" . $row[2] . "</td><td>" . $row[3] . "</td></tr>";
+						}
+					?>	
+		*/
+		?>
 	</body>
 </html>
