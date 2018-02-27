@@ -40,7 +40,7 @@
 						$fail = 1;
 					}
 					//Encrypt
-					$password = sha1($password);
+					$password = md5($password);
 				}
 				
 				//Add to database if regex check passes

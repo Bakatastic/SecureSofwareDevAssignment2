@@ -21,7 +21,7 @@
 				else{
 					$username = sanitize($_POST["username"]);
 					//Check input
-					if(!preg_match("/^[a-zA-Z0-9]*$/", $username)){
+					if(!preg_match("/^[a-zA-Z0-9]{1,20}$/", $username)){
 						$usernameErr = "Only letters and allowed<br>";
 						$fail = 1;
 					}
@@ -35,19 +35,32 @@
 				else{
 					$password = sanitize($_POST["password"]);
 					//Check input
-					if(!preg_match("/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/", $password)){
+					if(!preg_match("/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,40}$/", $password)){
 						$passwordErr = "Enter a password with at least 8 letters and numbers<br>";
 						$fail = 1;
 					}
 					//Encrypt
-					$password = sha1($password);
+					$password = md5($password);
+				}
+				
+				//Email regex
+				if(empty($_POST["email"])){
+					$emailErr = "Email is required<br>";
+					$fail = 1;
+				}
+				else{
+					$email = sanitize($_POST["email"]);
+					//Check input
+					if(!preg_match("/^[a-zA-Z0-9.!#$%&'*+=?^_`{|}~-]{1,}@[a-zA-Z0-9]{1,}\.[a-zA-Z0-9]{1,}$/", $email)){
+						$emailErr = "Enter a proper email<br>";
+						$fail = 1;
+					}
 				}
 				
 				//Add to database if regex check passes
 				if($fail == 0){
 					alert("pass");
 					$conn = pg_connect("host=localhost dbname=a2 user=postgres password=password");
-					//$conn = pg_connect("host=fasd dbname=fdsfa user=postfdsgres password=dfsd");
 					if ($conn) {
 						//alert("conn pass");
 						$query = "INSERT INTO users (username, password) VALUES ('$_POST[username]','$_POST[password]');";
@@ -95,10 +108,10 @@
 				</tr>
 				<tr>
 					<td align=right>
-						Avatar:
+						Email Address:
 					</td>
 					<td>
-						<input type="file" name="image" accept="image/x-png,image/gif,image/jpeg" />
+						<input type="text" name="email"/>
 					</td>
 				</tr>
 				<tr>
