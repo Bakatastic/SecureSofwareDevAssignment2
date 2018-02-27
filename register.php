@@ -1,5 +1,8 @@
 <?php
 	session_start();
+	if (($_SESSION["username"]) != null) {
+            session_destroy();
+    }
 ?>
 <html>
 	<head>
@@ -11,8 +14,8 @@
 		<h1>Create New User</h1>
 		<?php
 			//Set variables to empty values
-			$usernameErr = $paswordErr = "";
-			$username = $password= "";
+			$usernameErr = $paswordErr = $emailErr = "";
+			$username = $password = $email = "";
 			$fail = 0;
 			
 			if($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -135,6 +138,7 @@
 		<?php
 			echo $usernameErr;
 			echo $passwordErr;
+			echo $emailErr;
 		?>
 	</body>
 </html>
