@@ -45,10 +45,21 @@
 				
 				//Add to database if regex check passes
 				if($fail == 0){
+					alert("pass");
 					$conn = pg_connect("host=localhost dbname=a2 user=postgres password=password");
-					$query = "INSERT INTO users VALUES ('$_POST[username]','$_POST[password]');";
-					$result = pg_query($query);
-					echo "User added!";
+					//$conn = pg_connect("host=fasd dbname=fdsfa user=postfdsgres password=dfsd");
+					if ($conn) {
+						//alert("conn pass");
+						$query = "INSERT INTO users (username, password) VALUES ('$_POST[username]','$_POST[password]');";
+						$result = pg_query($query);
+						alert("User Added");
+					} else {
+						alert("conn failed");
+					}
+					
+				} else 
+				{
+					alert("fail");
 				}
 			}
 			
@@ -57,6 +68,10 @@
 				$input = stripslashes($input);
 				$input = htmlspecialchars($input);
 				return $input;
+			}
+			
+			function alert($msg) {
+				echo "<script type='text/javascript'>alert('$msg');</script>";
 			}
 		?>
 		<table>
@@ -79,6 +94,14 @@
 					</td>
 				</tr>
 				<tr>
+					<td align=right>
+						Avatar:
+					</td>
+					<td>
+						<input type="file" name="image" accept="image/x-png,image/gif,image/jpeg" />
+					</td>
+				</tr>
+				<tr>
 					<td>
 					</td>
 					<td align=center>
@@ -91,6 +114,5 @@
 			echo $usernameErr;
 			echo $passwordErr;
 		?>
-		<a href="listUser.php">User List<a>
 	</body>
 </html>
