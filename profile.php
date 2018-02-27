@@ -18,15 +18,19 @@
 	</head>
 	<body>
 		<h3>User: <?php echo $_SESSION["username"] ?></h3>
+		<?php $conn = pg_connect("host=localhost dbname=a2 user=postgres password=password");
+		$val = $_SESSION['username'];
+		$result = pg_query($conn, "SELECT * FROM users WHERE username='" . $val ."';");
+		$row = pg_fetch_row($result);?>
 		<form action="login.php" method="POST" >
 			<table>
 				<tr>
-					<td>Username: </td>
-					<td><input type="text" name="userInput" required /></td>
+					<td>Email: </td>
+					<td><?php echo $row[2] ?></td>
 				</tr>
 				<tr>
-					<td>Password: </td>
-					<td><input type="text" name="emailInput" required /></td>
+					<td>Avatar: </td>
+					<td>The last avatar</td>
 				</tr>
 				<tr>
 					<td><input type="submit" name="submit" /></td>
