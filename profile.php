@@ -25,12 +25,16 @@
 		<form action="login.php" method="POST" >
 			<table>
 				<tr>
+					<td>Avatar: </td>
+					<td>The last avatar</td>
+				</tr>
+				<tr>
 					<td>Email: </td>
 					<td><?php echo $row[2] ?></td>
 				</tr>
 				<tr>
-					<td>Avatar: </td>
-					<td>The last avatar</td>
+					<td>Bio: </td>
+					<td><?php echo $row[4] ?></td>
 				</tr>
 				<tr>
 					<td><input type="submit" name="submit" /></td>
