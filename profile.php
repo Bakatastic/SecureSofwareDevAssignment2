@@ -26,7 +26,11 @@
 			<table>
 				<tr>
 					<td>Avatar: </td>
-					<td><img height='30px' width='30px' src='<?php echo $row[3] ?>'/></td>
+					<?php 
+						header('Content-Type: image/jpeg');
+						readfile($imgPath);
+					?>
+					<td><img height='30px' width='30px' src='<?php if (isset($_POST["submit"])){ echo basename($_FILES['imgUpload']['name']); } else { echo $row[3]; } ?>'/></td>
 				</tr>
 				<tr>
 					<td>Upload file:</td>
@@ -34,11 +38,11 @@
 				</tr>
 				<tr>
 					<td>Email: </td>
-					<td><?php echo $row[2] ?></td>
+					<td><input type='text' value='<?php if (isset($_POST["submit"])){ echo $_POST['newEmail']; } else { echo $row[2]; } ?>' name='newEmail'></td>
 				</tr>
 				<tr>
 					<td>Bio: </td>
-					<td><?php echo $row[4] ?></td>
+					<td><textarea id='newBio' name="newBio"><?php if (isset($_POST["submit"])){ echo $_POST['newBio']; } else { echo $row[4]; } ?></textarea></td>
 				</tr>
 				<tr>
 					<td><input type="submit" name="submit" /></td>
@@ -46,19 +50,19 @@
 				</tr>			
 			</table>
 		</form>
-		
 	</body>
 	<?php 
 		$directory = "images/";
 		$user = $_SESSION['username'];
+		$email = $_POST["newEmail"];
+		$bio = htmlentities($_POST["newBio"]);
 		$target_file = $directory . basename($_FILES['imgUpload']['name']);
-		alert($target_file);
 		if(isset($_POST["submit"])) {
 			//$query = "UPDATE users SET (avatar) = ('" . $target_file . "') WHERE username= ' " . $_SESSION["username"] . "';";
-			echo "<p>UPDATE users SET avatar='$target_file' WHERE username='$user';</p>";
+			//echo "<p>UPDATE users SET avatar='$target_file', email='$email', bio='$bio' WHERE username='$user';</p>";
 			if (move_uploaded_file($_FILES["imgUpload"]["tmp_name"], $target_file)) {
-				$query = "UPDATE users SET avatar='$target_file' WHERE username='$user';";
-
+				$query = "UPDATE users SET avatar='$target_file', email='$email', bio='$bio' WHERE username='$user';";
+				$result=pg_query($conn,$query);
 			}
 		}
 		function alert($msg) {
