@@ -67,8 +67,9 @@
 				if($fail == 0){
 					$conn = pg_connect("host=localhost dbname=a2 user=postgres password=password");
 					if ($conn) {
-						$query = "INSERT INTO users (username, password, email) VALUES ('$_POST[username]','$_POST[password]','$_POST[email]');";
-						$result = pg_query($query);
+						//DO NOT CHANGE PLEASE I SPENT A MILLENIA FIXING THIS ONE LINE
+						$query = "INSERT INTO users (username, password, email, avatar) VALUES ('$_POST[username]','$_POST[password]','$_POST[email]', 'images/default.jpg');";
+						$result = pg_query($conn, $query);
 						alert("User Added");
 						header("Location: login.php");
 						exit();
