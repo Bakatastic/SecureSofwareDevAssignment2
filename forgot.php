@@ -39,8 +39,9 @@
 					$password = md5(sanitize("password1") . "AmazingSalt");
 					$conn = pg_connect("host=localhost dbname=a2 user=postgres password=password");
 									$result = pg_query($conn, "UPDATE users SET password = '$password' WHERE email = '$_POST[email]'");
+					alert("Password reset!");
 					//Send to another page
-					header("Location: profile.php");
+					header("Location: login.php");
 					exit();
 				}
 			}
@@ -50,6 +51,10 @@
 				$input = stripslashes($input);
 				$input = htmlspecialchars($input);
 				return $input;
+			}
+			
+			function alert($msg) {
+				echo "<script type='text/javascript'>alert('$msg');</script>";
 			}
 		?>
 			<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST">
