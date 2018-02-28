@@ -1,8 +1,16 @@
 <?php
 	session_start();
+	if (isset($_SESSION['fromProfile']))
+	{
+		$checkProfile = 1;
+	} else 	{
+		$checkProfile = 0;
+	}
+	
+	
     if (($_SESSION["username"]) != null) {
-            session_destroy();
-     }
+        session_destroy();
+    }
 ?>
 <html>
 	<head>
@@ -60,8 +68,15 @@
 							echo "Logged in!";
 							$_SESSION["username"] = $_POST["username"];
 							//Send to another page
-							header("Location: profile.php");
-							exit();
+							if ($checkProfile == 1)
+							{
+								header("Location: profile.php");
+								exit();
+							} else 
+							{
+								header("Location: postManagement.php");
+								exit();
+							}
 						}
 					}
 					echo "Login failed!";
