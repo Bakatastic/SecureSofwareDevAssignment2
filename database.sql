@@ -6,7 +6,7 @@ CREATE TABLE users (
     username	VARCHAR(20)			NOT NULL Primary Key,
     password	VARCHAR(40)			NOT NULL,
 	email		VARCHAR(100)		NOT NULL,
-    avatar		bytea,
+    avatar		VARCHAR(40)			NOT NULL,
 	bio			VARCHAR(100)
 );
 

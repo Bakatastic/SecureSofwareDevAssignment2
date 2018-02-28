@@ -22,11 +22,15 @@
 		$val = $_SESSION['username'];
 		$result = pg_query($conn, "SELECT * FROM users WHERE username='" . $val ."';");
 		$row = pg_fetch_row($result);?>
-		<form action="login.php" method="POST" >
+		<form action="profile.php" method="post" enctype="multipart/form-data" >
 			<table>
 				<tr>
 					<td>Avatar: </td>
-					<td><?php echo $row[3] ?></td>
+					<td><img height='30px' width='30px' src='<?php echo $row[3] ?>'/></td>
+				</tr>
+				<tr>
+					<td>Upload file:</td>
+					<td><input type="file" name="imgUpload" id="imgUpload" ></td>
 				</tr>
 				<tr>
 					<td>Email: </td>
@@ -42,5 +46,23 @@
 				</tr>			
 			</table>
 		</form>
+		
 	</body>
+	<?php 
+		$directory = "images/";
+		$user = $_SESSION['username'];
+		$target_file = $directory . basename($_FILES['imgUpload']['name']);
+		alert($target_file);
+		if(isset($_POST["submit"])) {
+			//$query = "UPDATE users SET (avatar) = ('" . $target_file . "') WHERE username= ' " . $_SESSION["username"] . "';";
+			echo "<p>UPDATE users SET avatar='$target_file' WHERE username='$user';</p>";
+			if (move_uploaded_file($_FILES["imgUpload"]["tmp_name"], $target_file)) {
+				$query = "UPDATE users SET avatar='$target_file' WHERE username='$user';";
+
+			}
+		}
+		function alert($msg) {
+			echo "<script type='text/javascript'>alert('$msg');</script>";
+		}
+	?>
 </html>
