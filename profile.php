@@ -11,6 +11,7 @@
 	</style>
 	<?php 
 		if (($_SESSION["username"]) == null) {
+			$_SESSION["fromProfile"] = 1;
 			header("Location: login.php");
 			exit();
 		}
@@ -26,10 +27,6 @@
 			<table>
 				<tr>
 					<td>Avatar: </td>
-					<?php 
-						header('Content-Type: image/jpeg');
-						readfile($imgPath);
-					?>
 					<td><img height='30px' width='30px' src='<?php if (isset($_POST["submit"])){ echo basename($_FILES['imgUpload']['name']); } else { echo $row[3]; } ?>'/></td>
 				</tr>
 				<tr>
