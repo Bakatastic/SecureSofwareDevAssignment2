@@ -10,11 +10,17 @@
 	<style type="text/css">
 	</style>
 	<?php 
+		$_SESSION['fromProfile'] = 0;
 		if (($_SESSION["username"]) == null) {
 			$_SESSION["fromProfile"] = 1;
 			header("Location: login.php");
 			exit();
 		}
+		
+		if ($_SESSION["Change"] == 1) {
+			session_destroy();
+		}
+		alert($_SESSION["Change"]);
 	?>
 	</head>
 	<body>
@@ -47,6 +53,22 @@
 				</tr>			
 			</table>
 		</form>
+		<form action="profile.php" method="post" >
+			<table>
+				<tr>
+					<td>New Password</td>
+					<td><input type="password" name="newPassword" id="newPassword" ></td>
+				</tr>
+				<tr>
+					<td>Confirm Password: </td>
+					<td><input type='password' name='confirmPassword' id='confirmPassword'></td>
+				</tr>
+				<tr>
+					<td><input type="submit" name="changePassword" /></td>
+					<td></td>
+				</tr>			
+			</table>
+		</form>
 	</body>
 	<?php 
 		$directory = "images/";
@@ -55,24 +77,76 @@
 		$bio = htmlentities($_POST["newBio"]);
 		$target_file = $directory . basename($_FILES['imgUpload']['name']);
 		$checkFile = basename($_FILES['imgUpload']['name']);
+
+		if ($_SESSION['Change'] == 2){ 
+			$conn = pg_connect("host=localhost dbname=a2 user=postgres password=password");
+			if ($conn) {
+				$newPassword = $_SESSION['newPassword'];
+				$result = pg_query($conn, "UPDATE users SET password = '$newPassword' WHERE username = '$user'");
+				exit();
+				alert("Password Changed");
+			} else {
+				alert("conn failed");
+			}
+		}
 		
-		if ($checkFile == "") {
-			if (isset($_POST["submit"])) {
+		if (isset($_POST["submit"])) {
+			if ($checkFile == "") {
 				if (move_uploaded_file($_FILES["imgUpload"]["tmp_name"], $target_file)) {
 					$query = "UPDATE users SET email='$email', bio='$bio' WHERE username='$user';";
 					$result=pg_query($conn,$query);
 				}
-			}
-		} else {
-			if (isset($_POST["submit"])) {
+			} else {
 				if (move_uploaded_file($_FILES["imgUpload"]["tmp_name"], $target_file)) {
 					$query = "UPDATE users SET avatar='$target_file', email='$email', bio='$bio' WHERE username='$user';";
 					$result=pg_query($conn,$query);
 				}
 			}
+		} else if (isset($_POST["changePassword"])){
+			$fail = 0;
+			if(empty($_POST["newPassword"])){
+				$passwordErr = "Password is required<br>";
+				$fail = 1;
+			}
+			else{
+				$password = sanitize($_POST["newPassword"]);
+				$confirmPassword = sanitize($_POST["confirmPassword"]);
+				//Check input
+				if(!preg_match("/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,40}$/", $password)){
+					$passwordErr = "Enter a password with at least 8 letters and numbers<br>";
+					$fail = 1;
+				}
+				
+				if ($password != $confirmPassword)
+				{
+					$passwordErr = "Passwords do not match<br>";
+					$fail = 1;
+				}
+				//Encrypt
+				$password = md5($password . "AmazingSalt");			
+			}
+			
+			//Add to database if regex check passes
+			if($fail == 0){
+				alert("password Changed");
+				$_SESSION["Change"] = 1;
+				$_SESSION["fromProfile"] = 0;
+				$_SESSION["newPassword"] = $password;
+				header("Location: login.php");
+				exit();		
+			} else 
+			{
+				alert($passwordErr);
+			}
 		}
 		
-		
+		function sanitize($input){
+			$input = trim($input);
+			$input = stripslashes($input);
+			$input = htmlspecialchars($input);
+			return $input;
+		}
+	
 		function alert($msg) {
 			echo "<script type='text/javascript'>alert('$msg');</script>";
 		}

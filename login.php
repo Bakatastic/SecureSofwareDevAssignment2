@@ -1,14 +1,12 @@
 <?php
 	session_start();
-	if (isset($_SESSION['fromProfile']))
-	{
-		$checkProfile = 1;
+	if (isset($_SESSION['fromProfile'])) {
+		$checkProfile = $_SESSION['fromProfile'];
 	} else 	{
-		$checkProfile = 0;
+		$checkProfile = $_SESSION['fromProfile'];
 	}
 	
-	
-    if (($_SESSION["username"]) != null) {
+    if ((($_SESSION["username"]) != null) && ($_SESSION['Change'] != 1)) {
         session_destroy();
     }
 ?>
@@ -70,12 +68,19 @@
 							//Send to another page
 							if ($checkProfile == 1)
 							{
+								$checkProfile = 0;
 								header("Location: profile.php");
 								exit();
 							} else 
 							{
-								header("Location: postManagement.php");
-								exit();
+								if ($_SESSION['Change'] == 1){
+									$_SESSION['Change'] = 2;
+									header("Location: profile.php");
+									exit();
+								} else {
+									header("Location: postManagement.php");
+									exit();
+								}
 							}
 						}
 					}
