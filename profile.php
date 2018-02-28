@@ -54,12 +54,25 @@
 		$email = $_POST["newEmail"];
 		$bio = htmlentities($_POST["newBio"]);
 		$target_file = $directory . basename($_FILES['imgUpload']['name']);
-		if(isset($_POST["submit"])) {
-			if (move_uploaded_file($_FILES["imgUpload"]["tmp_name"], $target_file)) {
-				$query = "UPDATE users SET avatar='$target_file', email='$email', bio='$bio' WHERE username='$user';";
-				$result=pg_query($conn,$query);
+		$checkFile = basename($_FILES['imgUpload']['name']);
+		
+		if ($checkFile == "") {
+			if (isset($_POST["submit"])) {
+				if (move_uploaded_file($_FILES["imgUpload"]["tmp_name"], $target_file)) {
+					$query = "UPDATE users SET email='$email', bio='$bio' WHERE username='$user';";
+					$result=pg_query($conn,$query);
+				}
+			}
+		} else {
+			if (isset($_POST["submit"])) {
+				if (move_uploaded_file($_FILES["imgUpload"]["tmp_name"], $target_file)) {
+					$query = "UPDATE users SET avatar='$target_file', email='$email', bio='$bio' WHERE username='$user';";
+					$result=pg_query($conn,$query);
+				}
 			}
 		}
+		
+		
 		function alert($msg) {
 			echo "<script type='text/javascript'>alert('$msg');</script>";
 		}
