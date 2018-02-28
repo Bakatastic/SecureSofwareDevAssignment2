@@ -8,22 +8,38 @@
 	<head>
 	<title>Profile</title>
 	<style type="text/css">
-	</style>
+		ul {
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+		}
+
+		li {
+			display: inline;
+		}
+	</style>	
 	<?php 
 		$_SESSION['fromProfile'] = 0;
 		if (($_SESSION["username"]) == null) {
 			$_SESSION["fromProfile"] = 1;
 			header("Location: login.php");
 			exit();
-		}
+		}			
 		
 		if ($_SESSION["Change"] == 1) {
 			session_destroy();
 		}
-		alert($_SESSION["Change"]);
 	?>
 	</head>
 	<body>
+		<ul>
+			<li><a href="postManagement.php">Post Management</a></li>
+			<li><a href="profile.php">Profile</a></li>
+			<li><a href="newPost.php">New Post</a></li>
+			<li><a href="userAdmin.php">User Admin</a></li>
+			<li><a href="visitorBlog.php">Visitor Blog</a></li>
+			<li><a href="login.php">Logout</a></li>
+		</ul>
 		<h3>User: <?php echo $_SESSION["username"] ?></h3>
 		<?php $conn = pg_connect("host=localhost dbname=a2 user=postgres password=password");
 		$val = $_SESSION['username'];
@@ -78,9 +94,11 @@
 		$target_file = $directory . basename($_FILES['imgUpload']['name']);
 		$checkFile = basename($_FILES['imgUpload']['name']);
 
+		//checks if the third phase in changing password
 		if ($_SESSION['Change'] == 2){ 
 			$conn = pg_connect("host=localhost dbname=a2 user=postgres password=password");
 			if ($conn) {
+				//uploads new password
 				$newPassword = $_SESSION['newPassword'];
 				$result = pg_query($conn, "UPDATE users SET password = '$newPassword' WHERE username = '$user'");
 				exit();
@@ -91,6 +109,7 @@
 		}
 		
 		if (isset($_POST["submit"])) {
+			//checks the file if empty or not. if empty don't insert new file
 			if ($checkFile == "") {
 				if (move_uploaded_file($_FILES["imgUpload"]["tmp_name"], $target_file)) {
 					$query = "UPDATE users SET email='$email', bio='$bio' WHERE username='$user';";

@@ -67,17 +67,20 @@
 							$_SESSION["username"] = $_POST["username"];
 							//Send to another page
 							if ($checkProfile == 1)
-							{
+							{							
 								$checkProfile = 0;
+								//destination if coming from Profile.php
 								header("Location: profile.php");
 								exit();
 							} else 
 							{
+								//checks if the change password flag is up. redirects to correct page
 								if ($_SESSION['Change'] == 1){
 									$_SESSION['Change'] = 2;
 									header("Location: profile.php");
 									exit();
 								} else {
+									//if everything is successful. neutral destination
 									header("Location: postManagement.php");
 									exit();
 								}
