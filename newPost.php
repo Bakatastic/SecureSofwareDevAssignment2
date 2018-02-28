@@ -7,7 +7,7 @@
 ?>
 <html>
 	<head>
-	<title>Login</title>
+	<title>New Post</title>
 	<style type="text/css">
 	</style>
 	</head>
@@ -18,27 +18,50 @@
 			$postErr = "";
 			$posttext = "";
 			$fail = 0;
-			
+			$conn = pg_connect("host=localhost dbname=a2 user=postgres password=password");
 			if($_SERVER["REQUEST_METHOD"] == "POST"){
-				//Password regex to sanitize input before comparing database
-				if(empty($_POST["posttext"])){
-					$postErr = "Enter a post<br>";
-					$fail = 1;
+				if(!$_GET["id"]){
+					if(empty($_POST["posttext"])){
+						$postErr = "Enter a post<br>";
+						$fail = 1;
+					}
+					else{
+						$posttext = sanitize($_POST["posttext"]);
+					}
+					//Add to database if regex check passes
+					if($fail == 0){
+						if($conn){
+							$query = "INSERT INTO posts (posttext, username) VALUES ('$posttext','$_SESSION[username]');";
+							$result = pg_query($query);
+							header("Location: visitorBlog.php");
+							exit();
+						}
+						else {
+							alert("conn failed");
+						}
+					}
 				}
 				else{
-					$posttext = sanitize($_POST["posttext"]);
-				}
-				//Add to database if regex check passes
-				if($fail == 0){
-					$conn = pg_connect("host=localhost dbname=a2 user=postgres password=password");
-					if($conn){
-						$query = "INSERT INTO posts (posttext, username) VALUES ('$posttext','$_SESSION[username]');";
-						$result = pg_query($query);
+					if(empty($_POST["posttext"])){
+						$postErr = "Enter a post<br>";
+						$fail = 1;
 					}
-					else {
-						alert("conn failed");
+					else{
+						$posttext = sanitize($_POST["posttext"]);
+					}
+					//Add to database if regex check passes
+					if($fail == 0){
+						if($conn){
+							$result = pg_query($conn, "UPDATE posts SET posttext = '$posttext' WHERE postid = '$_GET[id]' AND username = '$_SESSION[username]'");
+							header("Location: visitorBlog.php");
+							exit();
+						}
+						else {
+							alert("conn failed");
+						}
 					}
 				}
+
 			}
 			
 			function sanitize($input){
@@ -48,14 +71,36 @@
 				return $input;
 			}
 		?>
-			<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST">
+		<form action = "
+		<?php
+			//For new posts
+			if(!$_GET["id"]){
+				echo htmlspecialchars($_SERVER["PHP_SELF"]);
+			}
+			//For edits
+			else{
+				
+				echo htmlspecialchars($_SERVER["PHP_SELF"]) . "?id=" . $_GET["id"] . "&edit=true";
+			}
+		?>
+		" method="POST" id="newpost">
 				<table>
 					<tr>
 						<td align=right>
 							Post:
 						</td>
 						<td>
-							<input type="text" name="posttext"/>
+							<textarea name="posttext" form="newpost" rows="5" cols="50"><?php
+								//If editing, grab all text from db
+								if($_GET["id"]){
+									$result = pg_query($conn, "SELECT * FROM posts WHERE postid = '$_GET[id]' AND username = '$_SESSION[username]'");
+									while($row = pg_fetch_row($result)){
+										
+										echo $row[1];
+									}
+								}
+							?>
+							</textarea>
 						</td>
 					</tr>
 					<tr>
