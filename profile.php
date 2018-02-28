@@ -55,8 +55,6 @@
 		$bio = htmlentities($_POST["newBio"]);
 		$target_file = $directory . basename($_FILES['imgUpload']['name']);
 		if(isset($_POST["submit"])) {
-			//$query = "UPDATE users SET (avatar) = ('" . $target_file . "') WHERE username= ' " . $_SESSION["username"] . "';";
-			//echo "<p>UPDATE users SET avatar='$target_file', email='$email', bio='$bio' WHERE username='$user';</p>";
 			if (move_uploaded_file($_FILES["imgUpload"]["tmp_name"], $target_file)) {
 				$query = "UPDATE users SET avatar='$target_file', email='$email', bio='$bio' WHERE username='$user';";
 				$result=pg_query($conn,$query);
