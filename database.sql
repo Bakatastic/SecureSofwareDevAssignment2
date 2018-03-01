@@ -12,7 +12,7 @@ CREATE TABLE users (
 	approved		BOOLEAN			NOT NULL,
 	accountLock 	BOOLEAN			NOT NULL,
 	failedAttempts	INTEGER,
-	activated	 	BOOLEAN			NOT NULL,
+	activated	 	BOOLEAN			NOT NULL
 );
 
 CREATE TABLE posts (
