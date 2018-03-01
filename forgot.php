@@ -79,5 +79,7 @@
 			<?php
 				echo $emailErr;
 			?>
+			<br>
+			<a href="login.php">Back</a>
 	</body>
 </html>
