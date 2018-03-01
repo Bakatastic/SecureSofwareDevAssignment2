@@ -15,9 +15,16 @@ CREATE TABLE users (
 );
 
 CREATE TABLE posts (
-    postID		serial primary key,
-    postText	VARCHAR(1000)		NOT NULL,
-    username	VARCHAR(20)			NOT NULL,
+    postID			serial primary key,
+    postText		VARCHAR(1000)	NOT NULL,
+    username		VARCHAR(20)		NOT NULL,
     FOREIGN KEY (username) REFERENCES users(username)
 
+);
+
+CREATE TABLE logs (
+	logID			serial primary key,
+	logText			VARCHAR(200)	NOT NULL,
+	username		VARCHAR(20)		NOT NULL,
+    FOREIGN KEY (username) REFERENCES users(username)
 );
