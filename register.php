@@ -135,5 +135,7 @@
 			echo $passwordErr;
 			echo $emailErr;
 		?>
+		<br>
+		Have an account? <a href="login.php">Login!</a>
 	</body>
 </html>

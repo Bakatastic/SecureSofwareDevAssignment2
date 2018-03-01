@@ -126,12 +126,13 @@
 					</tr>
 				</table>
 			</form>
-			<br>
-			<a href="forgot.php">Forgot Password</a>
-			
 			<?php
 				echo $usernameErr;
 				echo $passwordErr;
 			?>
+			<br>
+			Don't have an account? <a href="register.php">Register!</a>
+			<br>
+			<a href="forgot.php">Forgot Password</a>
 	</body>
 </html>
