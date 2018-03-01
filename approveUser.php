@@ -72,7 +72,7 @@
 			
 			function activation($activateUser) {
 				$conn = pg_connect("host=localhost dbname=a2 user=postgres password=password");
-				$activationLink = "/activateUser.php/?username=$activateUser";
+				$activationLink = "/activateUser.php?username=$activateUser";
 				$query = "INSERT INTO logs (logtext, username) VALUES ('$activationLink', '$activateUser');";
 				$result=pg_query($conn,$query);
 			}
