@@ -43,7 +43,7 @@
 		
 		
 		
-		$result = pg_query($conn, "SELECT posts.*, users.avatar FROM posts INNER JOIN users ON posts.username = users.username WHERE posts.username = 'Brian' ORDER BY postid DESC;");
+		$result = pg_query($conn, "SELECT posts.*, users.avatar FROM posts INNER JOIN users ON posts.username = users.username WHERE posts.username = '$_SESSION[username]' ORDER BY postid DESC;");
 		while($row = pg_fetch_row($result)){
 			//MISSING AVATAR PLEASE ADD
 			//echo "$row[0] . $row[1] . $row[2] . $row[3] . $row[4]";
