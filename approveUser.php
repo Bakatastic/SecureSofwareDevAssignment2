@@ -28,20 +28,43 @@
 			<li><a href="visitorBlog.php">Visitor Blog</a></li>
 			<li><a href="login.php">Logout</a></li>
 		</ul>
-		
+		<?php 
+			$conn = pg_connect("host=localhost dbname=a2 user=postgres password=password");
+			$result = pg_query($conn, "SELECT * FROM users WHERE username='$_GET[username]';");
+			$row = pg_fetch_row($result);	
+			$user = $row[0];
+		?>
+		<h3>User: <?php echo $row[0] ?></h3>
 		<div>
-			<table>
-				<?php $conn = pg_connect("host=localhost dbname=a2 user=postgres password=password");
-					$result = pg_query($conn, "SELECT * FROM users;");
-					$row = pg_fetch_row($result);
-					
-					while ($row = pg_fetch_row($result))
-					{
-						echo "<tr><td>$row[0]</td><td>" . $row[2] . "</td><td>" . $row[3] . "</td><td><a href='editUser.php?username='" . $row[0] . ">edit</a></td><td><a href='approveUser.php?username='" . $row[0] . ">approve</a></td><td><a href='deleteUser.php?username='" . $row[0] . ">delete</a></td></tr>";
+				<?php 
+					if ($row[6] == 't'){
+						echo "<p>Unapprove $user?</p>";
+					} else {
+						echo "<p>Approve $user?</p>";
 					}
 				?>
-			</table>
+			<form action='approveUser.php' method="post">
+				<input type="hidden" name="approveUser" value="<?php echo $_GET['username']?>">
+				<input type='submit' value='Approve' width='20px' name='approve'>
+			</form>
+			<form action='approveUser.php' method="post">
+				<input type="hidden" name="unapproveUser" value="<?php echo $_GET['username']?>">
+				<input type='submit' value='Revoke Approval' width='20px' name='unapprove'>
+			</form>			
 		</div>
-		
+		<?php	
+			if(isset($_POST['approve'])) {
+				$query = "UPDATE users SET approved='true' Where username='$_POST[approveUser]'";
+				echo $query;
+				$result=pg_query($conn,$query);
+				header("Location: userAdmin.php");
+				exit();		
+			} else if(isset($_POST['unapprove'])) {				
+				$query = "UPDATE users SET approved='false' Where username='$_POST[unapproveUser]'";
+				$result=pg_query($conn,$query);
+				header("Location: userAdmin.php");
+				exit();		
+			}
+		?>
 	</body>
 </html>
