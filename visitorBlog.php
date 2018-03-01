@@ -50,7 +50,7 @@ The main blog page. Visitors to the blog should be able to view a summary of rec
 		$result = pg_query($conn, "SELECT posts.*, users.avatar FROM posts INNER JOIN users ON posts.username = users.username ORDER BY postid DESC;");
 		while($row = pg_fetch_row($result)){
 			//MISSING AVATAR PLEASE ADD
-			echo "<div style='border-style:solid; border-width:1px; padding:5px;'> <img src='" . $row[3] . "' width='50px' height='50px' >" . $row[2] . "<br>" . $row[1] . "</div><br>";
+			echo "<a href='blogDetails.php?id=" . $row[0] . "' style='text-decoration:none;color:black'><div style='border-style:solid; border-width:1px; padding:5px;'> <img src='" . $row[3] . "' width='50px' height='50px' >" . $row[2] . "<br>" . $row[1] . "</div></a><br>";
 			//echo "<tr><td>" . $row[2] . "</td><td>" . $row[1] . "</td></tr>";
 		}
 		?>
