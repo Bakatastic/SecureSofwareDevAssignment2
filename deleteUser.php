@@ -37,7 +37,7 @@
 					
 					while ($row = pg_fetch_row($result))
 					{
-						echo "<tr><td>$row[0]</td><td>" . $row[2] . "</td><td>" . $row[3] . "</td><td><a href='editUser.php?username=" . $row[0] . "'>edit</a></td><td><a href='approveUser.php?username=" . $row[0] . "'>approve</a></td><td><a href='deleteUser.php?username=" . $row[0] . "'>delete</a></td></tr>";
+						echo "<tr><td>$row[0]</td><td>" . $row[2] . "</td><td>" . $row[3] . "</td><td><a href='editUser.php?username='" . $row[0] . ">edit</a></td><td><a href='approveUser.php?username='" . $row[0] . ">approve</a></td><td><a href='deleteUser.php?username='" . $row[0] . ">delete</a></td></tr>";
 					}
 				?>
 			</table>
