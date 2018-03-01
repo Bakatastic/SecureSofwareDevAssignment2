@@ -17,6 +17,10 @@
 		li {
 			display: inline;
 		}
+		
+		input[type=submit] {
+			width: 20em;
+		}
 	</style>
 	</head>
 	<body>
@@ -30,18 +34,32 @@
 		</ul>
 		
 		<div>
+			<h3>Delete <?php echo $_GET['username'] ?></h3>
 			<table>
-				<?php $conn = pg_connect("host=localhost dbname=a2 user=postgres password=password");
-					$result = pg_query($conn, "SELECT * FROM users;");
-					$row = pg_fetch_row($result);
-					
-					while ($row = pg_fetch_row($result))
-					{
-						echo "<tr><td>$row[0]</td><td>" . $row[2] . "</td><td>" . $row[3] . "</td><td><a href='editUser.php?username='" . $row[0] . ">edit</a></td><td><a href='approveUser.php?username='" . $row[0] . ">approve</a></td><td><a href='deleteUser.php?username='" . $row[0] . ">delete</a></td></tr>";
-					}
-				?>
+				<tr>
+				
+					<td>
+						<form action="deleteUser.php" method="post" >
+							<input type="submit" width='20px'  value="Yes" name='submit' />
+							<input type="hidden" name="hiddenUser" value="<?php echo $_GET['username'] ?>" />
+						</form>
+						<form action="userAdmin.php" method="post" >
+							<input type="submit" value="No" width='20px' name='submit' />
+						</form>
+						
+					</td>
+				</tr>
 			</table>
 		</div>
-		
+		<?php 
+			$conn = pg_connect("host=localhost dbname=a2 user=postgres password=password");
+			$user = $_POST['hiddenUser'];
+			if (isset($_POST["submit"])) {
+				$query = "DELETE FROM users WHERE username='$user';";
+				$result = pg_query($query);
+				header("Location: userAdmin.php");
+				exit();	
+			}
+		?>
 	</body>
 </html>

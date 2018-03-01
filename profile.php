@@ -49,7 +49,7 @@
 			<table>
 				<tr>
 					<td>Avatar: </td>
-					<td><img height='30px' width='30px' src='<?php if (isset($_POST["submit"])){ echo basename($_FILES['imgUpload']['name']); } else { echo $row[3]; } ?>'/></td>
+					<td><img height='30px' width='30px' src='<?php echo $row[3]?>'/></td>
 				</tr>
 				<tr>
 					<td>Upload file:</td>
