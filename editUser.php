@@ -33,11 +33,13 @@
 		$result = pg_query($conn, "SELECT * FROM users WHERE username='" . $_GET['username'] ."';");
 		$row = pg_fetch_row($result);?>
 		<div>
-			<form action="userAdmin.php" method="post" enctype="multipart/form-data" >
+			<form action="editUser.php" method="post" enctype="multipart/form-data" >
+			<h3><?php echo $_GET['username']?></h3>
+			<input type="hidden" name="hiddenUser" value="<?php echo $_GET['username']?>">
 			<table>
 				<tr>
 					<td>Avatar: </td>
-					<td><img height='30px' width='30px' src='<?php if (isset($_POST["submit"])){ echo basename($_FILES['imgUpload']['name']); } else { echo $row[3]; } ?>'/></td>
+					<td><img height='30px' width='30px' src='<?php echo $row[3]?>'/></td>
 				</tr>
 				<tr>
 					<td>Upload file:</td>
@@ -58,6 +60,33 @@
 			</table>
 		</form>
 		</div>
-		
+		<?php 
+			$directory = "images/";
+			$user = $_POST['hiddenUser'];
+			$email = $_POST["newEmail"];
+			$bio = htmlentities($_POST["newBio"]);
+			$target_file = $directory . basename($_FILES['imgUpload']['name']);
+			$checkFile = basename($_FILES['imgUpload']['name']);
+			
+			if (isset($_POST["submit"])) {
+				//checks the file if empty or not. if empty don't insert new file
+				if ($checkFile == "") {
+					$query = "UPDATE users SET email='$email', bio='$bio' WHERE username='$user';";
+					$result=pg_query($conn,$query);
+					header("Location: userAdmin.php");
+					exit();		
+				} else {
+					if (move_uploaded_file($_FILES["imgUpload"]["tmp_name"], $target_file)) {
+						$query = "UPDATE users SET avatar='$target_file', email='$email', bio='$bio' WHERE username='$user';";
+						$result=pg_query($conn,$query);
+						header("Location: userAdmin.php");
+						exit();		
+					}
+				}
+			}
+			function alert($msg) {
+				echo "<script type='text/javascript'>alert('$msg');</script>";
+			}
+		?>
 	</body>
 </html>
