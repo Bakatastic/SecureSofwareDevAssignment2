@@ -45,10 +45,8 @@
 		
 		$result = pg_query($conn, "SELECT posts.*, users.avatar FROM posts INNER JOIN users ON posts.username = users.username WHERE posts.username = '$_SESSION[username]' ORDER BY postid DESC;");
 		while($row = pg_fetch_row($result)){
-			//MISSING AVATAR PLEASE ADD
-			//echo "$row[0] . $row[1] . $row[2] . $row[3] . $row[4]";
-
-			echo "<div style='border-style:solid; border-width:1px;'> <img src='" . $row[3] . "' width='50px' height='50px' > " . $row[2] . "<br>" . $row[1] . "<br><a href='newPost.php?id=" . $row[0] . "'>Edit</a>&nbsp<a href='postManagement.php?id=" . $row[0] . "'>Delete</a></div><br>";
+			//God bless this one line.
+			echo "<div style='border-style:solid; border-width:1px; padding:5px;'> <img src='" . $row[3] . "' width='50px' height='50px' > " . $row[2] . "<br>" . $row[1] . "<br><a href='newPost.php?id=" . $row[0] . "'>Edit</a>&nbsp<a href='postManagement.php?id=" . $row[0] . "'>Delete</a></div><br>";
 		}
 		?>
 	</body>
