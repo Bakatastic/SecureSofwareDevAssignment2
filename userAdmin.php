@@ -30,15 +30,60 @@
 		</ul>
 		
 		<div>
-			<table>
+			<table border="1">
+				<tr>
+					<th>
+						Username
+					</th>
+					<th>
+						Email
+					</th>
+					<th>
+						AvatarFilename
+					</th>
+					<th>
+						Admin
+					</th>
+					<th>
+						Approved
+					</th>
+					<th>
+						Locked
+					</th>
+					<th>
+						Failed Attempts
+					</th>
+				</tr>
 				<?php $conn = pg_connect("host=localhost dbname=a2 user=postgres password=password");
 					$result = pg_query($conn, "SELECT * FROM users;");
-					$row = pg_fetch_row($result);
-					
 					while ($row = pg_fetch_row($result))
 					{
-						echo "<tr><td>$row[0]</td><td>" . $row[2] . "</td><td>" . $row[3] . "</td><td><a href='editUser.php?username=" . $row[0] . "'>edit</a></td><td><a href='approveUser.php?username=" . $row[0] . "'>approve</a></td><td><a href='deleteUser.php?username=" . $row[0] . "'>delete</a></td></tr>";
+						if ($row[6] == 't') {
+							$approveStatus = 'approved';
+						} else  {
+							$approveStatus = 'unapproved';
+						}
+						
+						if ($row[5] == 't') {
+							$role = 'admin';
+						} else  {
+							$role = 'user';
+						}
+						
+						if ($row[7] == 't') {
+							$lockStatus = 'Locked';
+						} else  {
+							$lockStatus = 'Unlocked';
+						}
+						
+						//echo "<tr><td>$row[0]</td><td>" . $row[2] . "</td><td>" . $row[3] . "</td><td><a href='editUser.php?username=" . $row[0] . "'>edit</a></td><td><a href='approveUser.php?username=" . $row[6] . "'>approve</a></td><td><a href='deleteUser.php?username=" . $row[0] . "'>delete</a></td></tr>";
+						echo "<tr><td>$row[0]</td><td>$row[2]</td><td>$row[3]</td><td>$role</td><td><a href='approveUser.php?username=" . $row[0] . "'>$approveStatus</a></td><td>$lockStatus</td><td>$row[8]</td><td>$row[9]</td><td><a href='editUser.php?username=" . $row[0] . "'>edit</a></td><td><a href='deleteUser.php?username=" . $row[0] . "'>delete</a></td></tr>";
 					}
+					
+					function alert($msg) {
+						echo "<script type='text/javascript'>alert('$msg');</script>";
+					}
+					
 				?>
 			</table>
 		</div>
