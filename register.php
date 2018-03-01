@@ -69,7 +69,7 @@
 					if ($conn) {
 						//DO NOT CHANGE PLEASE I SPENT A MILLENIA FIXING THIS ONE LINE
 						//TOO BAD I CHANGED IT AND THERE'S NOTHING YOU CAN DO ABOUT IT HAHAHAHAHAHAHAHAHAHAHAHA! SUCK IT.
-						$query = "INSERT INTO users (username, password, email, avatar, adminRole, approved, accountLock, failedAttempts) VALUES ('$_POST[username]','$password','$_POST[email]', 'images/default.jpg', FALSE, FALSE, FALSE, 0);";
+						$query = "INSERT INTO users (username, password, email, avatar, adminRole, approved, accountLock, failedAttempts, activated) VALUES ('$_POST[username]','$password','$_POST[email]', 'images/default.jpg', FALSE, FALSE, FALSE, 0, FALSE);";
 						$result = pg_query($conn, $query);
 						alert("User Added");
 						header("Location: login.php");

@@ -51,15 +51,15 @@
 				</tr>
 			</table>
 		</div>
-		<?php 
-			$conn = pg_connect("host=localhost dbname=a2 user=postgres password=password");
-			$user = $_POST['hiddenUser'];
-			if (isset($_POST["submit"])) {
-				$query = "DELETE FROM users WHERE username='$user';";
-				$result = pg_query($query);
-				header("Location: userAdmin.php");
-				exit();	
-			}
-		?>
 	</body>
+	<?php 
+		$conn = pg_connect("host=localhost dbname=a2 user=postgres password=password");
+		$user = $_POST['hiddenUser'];
+		if (isset($_POST["submit"])) {
+			$query = "DELETE FROM users WHERE username='$user';";
+			$result = pg_query($query);
+			header("Location: userAdmin.php");
+			exit();	
+		}
+	?>
 </html>

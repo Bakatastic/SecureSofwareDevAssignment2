@@ -32,27 +32,14 @@
 		<div>
 			<table border="1">
 				<tr>
-					<th>
-						Username
-					</th>
-					<th>
-						Email
-					</th>
-					<th>
-						AvatarFilename
-					</th>
-					<th>
-						Admin
-					</th>
-					<th>
-						Approved
-					</th>
-					<th>
-						Locked
-					</th>
-					<th>
-						Failed Attempts
-					</th>
+					<th>Username</th>
+					<th>Email</th>
+					<th>AvatarFilename</th>
+					<th>Admin</th>
+					<th>Approved</th>
+					<th>Locked</th>
+					<th>Failed Attempts</th>
+					<th>Activated</th>
 				</tr>
 				<?php $conn = pg_connect("host=localhost dbname=a2 user=postgres password=password");
 					$result = pg_query($conn, "SELECT * FROM users;");
@@ -76,8 +63,13 @@
 							$lockStatus = 'Unlocked';
 						}
 						
-						//echo "<tr><td>$row[0]</td><td>" . $row[2] . "</td><td>" . $row[3] . "</td><td><a href='editUser.php?username=" . $row[0] . "'>edit</a></td><td><a href='approveUser.php?username=" . $row[6] . "'>approve</a></td><td><a href='deleteUser.php?username=" . $row[0] . "'>delete</a></td></tr>";
-						echo "<tr><td>$row[0]</td><td>$row[2]</td><td>$row[3]</td><td>$role</td><td><a href='approveUser.php?username=" . $row[0] . "'>$approveStatus</a></td><td>$lockStatus</td><td>$row[8]</td><td><a href='editUser.php?username=" . $row[0] . "'>edit</a></td><td><a href='deleteUser.php?username=" . $row[0] . "'>delete</a></td></tr>";
+						if ($row[9] == 't'){
+							$activationStatus = 'activated';
+						} else {
+							$activationStatus = 'unactivated';
+						}
+						
+						echo "<tr><td>$row[0]</td><td>$row[2]</td><td>$row[3]</td><td>$role</td><td><a href='approveUser.php?username=" . $row[0] . "'>$approveStatus</a></td><td>$lockStatus</td><td>$row[8]</td><td><a href='activateUser.php?username=$row[9]'>$activationStatus</a></td><td><a href='editUser.php?username=" . $row[0] . "'>edit</a></td><td><a href='deleteUser.php?username=" . $row[0] . "'>delete</a></td></tr>";
 					}
 					
 					function alert($msg) {

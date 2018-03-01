@@ -11,7 +11,8 @@ CREATE TABLE users (
 	adminRole   	BOOLEAN			NOT NULL,
 	approved		BOOLEAN			NOT NULL,
 	accountLock 	BOOLEAN			NOT NULL,
-	failedAttempts	INTEGER
+	failedAttempts	INTEGER,
+	activated	 	BOOLEAN			NOT NULL,
 );
 
 CREATE TABLE posts (

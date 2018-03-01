@@ -55,8 +55,8 @@
 		<?php	
 			if(isset($_POST['approve'])) {
 				$query = "UPDATE users SET approved='true' Where username='$_POST[approveUser]'";
-				echo $query;
 				$result=pg_query($conn,$query);
+				activation($_POST['approveUser']);
 				header("Location: userAdmin.php");
 				exit();		
 			} else if(isset($_POST['unapprove'])) {				
@@ -64,6 +64,17 @@
 				$result=pg_query($conn,$query);
 				header("Location: userAdmin.php");
 				exit();		
+			}
+			
+			function activation($activateUser) {
+				$conn = pg_connect("host=localhost dbname=a2 user=postgres password=password");
+				$activationLink = "/activateUser.php/?username=$activateUser";
+				$query = "INSERT INTO logs (logtext, username) VALUES ('$activationLink', '$activateUser');";
+				$result=pg_query($conn,$query);
+			}
+			
+			function alert($msg) {
+				echo "<script type='text/javascript'>alert('$msg');</script>";
 			}
 		?>
 	</body>
