@@ -3,6 +3,10 @@
 -->
 <?php
 	session_start();
+	if (!isset($_SESSION['admin'])){
+		header("Location: login.php");
+		exit();
+	}
 ?>
 <html>
 	<head>
@@ -46,7 +50,7 @@
 				$conn = pg_connect("host=localhost dbname=a2 user=postgres password=password");
 				$query = "UPDATE users SET activated='true' WHERE username='$user';";
 				$result = pg_query($conn,$query);
-				//$echo "test";
+				echo $query;
 				header("Location: login.php");
 				exit();				
 			}

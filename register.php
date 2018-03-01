@@ -1,7 +1,7 @@
 <?php
 	session_start();
 	if (($_SESSION["username"]) != null) {
-            session_destroy();
+        session_destroy();
     }
 ?>
 <html>

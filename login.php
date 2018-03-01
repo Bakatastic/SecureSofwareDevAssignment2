@@ -58,15 +58,19 @@
 				
 				//Add to database if regex check passes
 				if($fail == 0){
-					$result = pg_query($conn, "SELECT * FROM users");
+					$result = pg_query($conn, "SELECT * FROM users WHERE username='$username'");
 					while($user = pg_fetch_row($result)){
 						//Matches credentials
+						
 						if($username == $user[0] && $password == $user[1]){
 							if($user[6] == 'f'){
 								$otherErr = "Account not approved";
 							}
 							else if($user[7] == 't'){
 								$otherErr = "Account locked";
+							}
+							else if($user[9] == 'f'){
+								$otherErr = "Account is not Activated";
 							}
 							else{
 								//Login stuff
@@ -87,6 +91,9 @@
 										exit();
 									} else {
 										//if everything is successful. neutral destination
+										if ($user[5] == 't'){
+											$_SESSION['admin'] = 1;
+										}
 										header("Location: postManagement.php");
 										exit();
 									}
@@ -94,7 +101,8 @@
 							}
 						}
 						else{
-							$otherErr = "Incorrect username or password";
+							//$otherErr = "Incorrect username or password";
+							$otherErr = "$username . $user[0] . $password . $user[1]";
 							//Increment failed login attempts. Lock if 5 fails
 							//$result = pg_query($conn, "SELECT * FROM users");
 							if($user[8]<4){ //It says 4 here, but in practice, it's 5.

@@ -3,6 +3,10 @@
 -->
 <?php
 	session_start();
+	if (!isset($_SESSION['admin'])){
+		header("Location: login.php");
+		exit();
+	}
 ?>
 <html>
 	<head>
@@ -69,7 +73,7 @@
 							$activationStatus = 'unactivated';
 						}
 						
-						echo "<tr><td>$row[0]</td><td>$row[2]</td><td>$row[3]</td><td>$role</td><td><a href='approveUser.php?username=" . $row[0] . "'>$approveStatus</a></td><td>$lockStatus</td><td>$row[8]</td><td><a href='activateUser.php?username=$row[9]'>$activationStatus</a></td><td><a href='editUser.php?username=" . $row[0] . "'>edit</a></td><td><a href='deleteUser.php?username=" . $row[0] . "'>delete</a></td></tr>";
+						echo "<tr><td>$row[0]</td><td>$row[2]</td><td>$row[3]</td><td>$role</td><td><a href='approveUser.php?username=" . $row[0] . "'>$approveStatus</a></td><td>$lockStatus</td><td>$row[8]</td><td><a href='activateUser.php?username=$row[0]'>$activationStatus</a></td><td><a href='editUser.php?username=" . $row[0] . "'>edit</a></td><td><a href='deleteUser.php?username=" . $row[0] . "'>delete</a></td></tr>";
 					}
 					
 					function alert($msg) {
