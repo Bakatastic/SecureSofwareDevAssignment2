@@ -27,6 +27,7 @@
 			<li><a href="newPost.php">New Post</a></li>
 			<li><a href="userAdmin.php">User Admin</a></li>
 			<li><a href="visitorBlog.php">Visitor Blog</a></li>
+			<li><a href="login.php">Logout</a></li>
 		</ul>
 		<h1>New Post</h1>
 		<?php
