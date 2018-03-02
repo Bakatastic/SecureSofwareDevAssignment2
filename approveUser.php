@@ -21,6 +21,10 @@
 		li {
 			display: inline;
 		}
+		
+		img {
+			max-width: 100%;
+		}
 	</style>
 	</head>
 	<body>

@@ -34,6 +34,10 @@ The main blog page. Visitors to the blog should be able to view a summary of rec
 		li {
 			display: inline;
 		}
+		
+		img {
+			max-width: 100%;
+		}
 	</style>
 	</head>
 	<body>
@@ -49,7 +53,8 @@ The main blog page. Visitors to the blog should be able to view a summary of rec
 		$conn = pg_connect("host=localhost dbname=a2 user=postgres password=password");
 		$result = pg_query($conn, "SELECT posts.*, users.avatar FROM posts INNER JOIN users ON posts.username = users.username ORDER BY postid DESC;");
 		while($row = pg_fetch_row($result)){
-			echo "<a href='blogDetails.php?id=" . $row[0] . "' style='text-decoration:none;color:black'><div style='border-style:solid; border-width:1px; padding:5px;'> <img src='" . $row[3] . "' width='50px' height='50px' >" . $row[2] . "<br>" . $row[1] . "</div></a><br>";
+			$post = htmlspecialchars_decode($row[1]);
+			echo "<a href='blogDetails.php?id=" . $row[0] . "' style='text-decoration:none;color:black'><div style='border-style:solid; border-width:1px; padding:5px;'> <img src='" . $row[3] . "' width='50px' height='50px' >" . $row[2] . "<br>" . $post . "</div></a><br>";
 			//echo "<tr><td>" . $row[2] . "</td><td>" . $row[1] . "</td></tr>";
 		}
 		?>

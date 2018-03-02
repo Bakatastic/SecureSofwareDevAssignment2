@@ -18,6 +18,10 @@
 		li {
 			display: inline;
 		}
+		
+		img {
+			max-width: 100%;
+		}
 	</style>	
 	</head>
 	<body>
@@ -41,12 +45,11 @@
 			}
 		}
 		
-		
-		
 		$result = pg_query($conn, "SELECT posts.*, users.avatar FROM posts INNER JOIN users ON posts.username = users.username WHERE posts.username = '$_SESSION[username]' ORDER BY postid DESC;");
 		while($row = pg_fetch_row($result)){
+			$post = htmlspecialchars_decode($row[1]);
 			//God bless this one line.
-			echo "<div style='border-style:solid; border-width:1px; padding:5px;'> <img src='" . $row[3] . "' width='50px' height='50px' > " . $row[2] . "<br>" . $row[1] . "<br><a href='newPost.php?id=" . $row[0] . "'>Edit</a>&nbsp<a href='postManagement.php?id=" . $row[0] . "'>Delete</a></div><br>";
+			echo "<div style='border-style:solid; border-width:1px; padding:5px;'> <img src='" . $row[3] . "' width='50px' height='50px' > " . $row[2] . "<br>" . $post . "<br><a href='newPost.php?id=" . $row[0] . "'>Edit</a>&nbsp<a href='postManagement.php?id=" . $row[0] . "'>Delete</a></div><br>";
 		}
 		?>
 	</body>

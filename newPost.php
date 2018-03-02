@@ -84,6 +84,7 @@
 			function sanitize($input){
 				$input = trim($input);
 				$input = stripslashes($input);
+				$input = str_replace("'",'"', $input);
 				$input = htmlspecialchars($input);
 				return $input;
 			}
