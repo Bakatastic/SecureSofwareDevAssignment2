@@ -49,11 +49,11 @@
 			<table>
 				<tr>
 					<td>Avatar: </td>
-					<td><img height='30px' width='30px' src='<?php echo $row[3]?>'/></td>
+					<td><img height='30px' width='30px' src='<?php if (isset($_POST["submit"])){ echo "images/" . basename($_FILES['imgUpload']['name']); } else { echo $row[3]; } ?>'/></td>
 				</tr>
 				<tr>
 					<td>Upload file:</td>
-					<td><input type="file" name="imgUpload" id="imgUpload" ></td>
+					<td><input type="file" name="imgUpload" id="imgUpload" accept="image/*" ></td>
 				</tr>
 				<tr>
 					<td>Email: </td>
@@ -111,14 +111,18 @@
 		if (isset($_POST["submit"])) {
 			//checks the file if empty or not. if empty don't insert new file
 			if ($checkFile == "") {
-				if (move_uploaded_file($_FILES["imgUpload"]["tmp_name"], $target_file)) {
-					$query = "UPDATE users SET email='$email', bio='$bio' WHERE username='$user';";
-					$result=pg_query($conn,$query);
-				}
+				$query = "UPDATE users SET email='$email', bio='$bio' WHERE username='$user';";
+				$result=pg_query($conn,$query);
 			} else {
-				if (move_uploaded_file($_FILES["imgUpload"]["tmp_name"], $target_file)) {
-					$query = "UPDATE users SET avatar='$target_file', email='$email', bio='$bio' WHERE username='$user';";
-					$result=pg_query($conn,$query);
+				$fileInfo = getimagesize($_FILES["imgUpload"]["tmp_name"]);
+				$imageType = $fileInfo[2];
+				if (in_array($imageType, array(IMAGETYPE_GIF , IMAGETYPE_JPEG ,IMAGETYPE_PNG , IMAGETYPE_BMP))) {
+					if (move_uploaded_file($_FILES["imgUpload"]["tmp_name"], $target_file)) {
+						$query = "UPDATE users SET avatar='$target_file', email='$email', bio='$bio' WHERE username='$user';";
+						$result=pg_query($conn,$query);
+					}
+				} else {
+					alert("bad file");
 				}
 			}
 		} else if (isset($_POST["changePassword"])){
