@@ -110,19 +110,26 @@
 		
 		if (isset($_POST["submit"])) {
 			//checks the file if empty or not. if empty don't insert new file
-			if ($checkFile == "") {
-				$query = "UPDATE users SET email='$email', bio='$bio' WHERE username='$user';";
-				$result=pg_query($conn,$query);
-			} else {
-				$fileInfo = getimagesize($_FILES["imgUpload"]["tmp_name"]);
-				$imageType = $fileInfo[2];
-				if (in_array($imageType, array(IMAGETYPE_GIF , IMAGETYPE_JPEG ,IMAGETYPE_PNG , IMAGETYPE_BMP))) {
-					if (move_uploaded_file($_FILES["imgUpload"]["tmp_name"], $target_file)) {
-						$query = "UPDATE users SET avatar='$target_file', email='$email', bio='$bio' WHERE username='$user';";
-						$result=pg_query($conn,$query);
-					}
+			if($email != "") { 
+				$email = sanitize($email);
+				//Check input
+				if(preg_match("/^[a-zA-Z0-9.!#$%&'*+=?^_`{|}~-]{1,}@[a-zA-Z0-9]{1,}\.[a-zA-Z0-9]{1,}$/", $email)){
+							
+				//checks the file if empty or not. if empty don't insert new file
+				if ($checkFile == "") {
+					$query = "UPDATE users SET email='$email', bio='$bio' WHERE username='$user';";
+					$result=pg_query($conn,$query);
 				} else {
-					alert("bad file");
+					$fileInfo = getimagesize($_FILES["imgUpload"]["tmp_name"]);
+					$imageType = $fileInfo[2];
+					if (in_array($imageType, array(IMAGETYPE_GIF , IMAGETYPE_JPEG ,IMAGETYPE_PNG , IMAGETYPE_BMP))) {
+						if (move_uploaded_file($_FILES["imgUpload"]["tmp_name"], $target_file)) {
+							$query = "UPDATE users SET avatar='$target_file', email='$email', bio='$bio' WHERE username='$user';";
+							$result=pg_query($conn,$query);
+						}
+					} else {
+						alert("bad file");
+					}
 				}
 			}
 		} else if (isset($_POST["changePassword"])){

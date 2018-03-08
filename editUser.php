@@ -40,10 +40,11 @@
 			<form action="editUser.php" method="post" enctype="multipart/form-data" >
 			<h3><?php echo $_GET['username']?></h3>
 			<input type="hidden" name="hiddenUser" value="<?php echo $_GET['username']?>">
+			<input type="hidden" name="imgSrc" value="<?php echo $_GET['avatar']?>">
 			<table>
 				<tr>
 					<td>Avatar: </td>
-					<td><img height='30px' width='30px' src='<?php if (isset($_POST["submit"])){ echo "images/" . basename($_FILES['imgUpload']['name']); } else { echo $row[3]; } ?>'/></td>
+					<td><img height='30px' width='30px' src='<?php if (isset($_POST["submit"])){ echo "images/" . $_POST["imgSrc"]; } else { echo $row[3]; } ?>'/></td>
 				</tr>
 				<tr>
 					<td>Upload file:</td>
@@ -74,24 +75,46 @@
 			
 			if (isset($_POST["submit"])) {
 				//checks the file if empty or not. if empty don't insert new file
-				if ($checkFile == "") {
-					$query = "UPDATE users SET email='$email', bio='$bio' WHERE username='$user';";
-					$result=pg_query($conn,$query);
-					header("Location: userAdmin.php");
-					exit();		
-				} else {
-					$fileInfo = getimagesize($_FILES["imgUpload"]["tmp_name"]);
-					$imageType = $fileInfo[2];
-					if (in_array($imageType, array(IMAGETYPE_GIF , IMAGETYPE_JPEG ,IMAGETYPE_PNG , IMAGETYPE_BMP))) {
-						if (move_uploaded_file($_FILES["imgUpload"]["tmp_name"], $target_file)) {
-							$query = "UPDATE users SET avatar='$target_file', email='$email', bio='$bio' WHERE username='$user';";
+				if($email != "") { 
+					$email = sanitize($email);
+					//Check input
+					if(preg_match("/^[a-zA-Z0-9.!#$%&'*+=?^_`{|}~-]{1,}@[a-zA-Z0-9]{1,}\.[a-zA-Z0-9]{1,}$/", $email)){
+						$emailErr = "Enter a proper email<br>";
+						$fail = 1;
+									
+						if ($checkFile == "") {
+							$bio = sanitize($bio);
+							$email = sanitize($email);
+							$query = "UPDATE users SET email='$email', bio='$bio' WHERE username='$user';";
 							$result=pg_query($conn,$query);
 							header("Location: userAdmin.php");
 							exit();		
+						} else {
+							$fileInfo = getimagesize($_FILES["imgUpload"]["tmp_name"]);
+							$imageType = $fileInfo[2];
+							if (in_array($imageType, array(IMAGETYPE_GIF , IMAGETYPE_JPEG ,IMAGETYPE_PNG , IMAGETYPE_BMP))) {
+								if (move_uploaded_file($_FILES["imgUpload"]["tmp_name"], $target_file)) {
+									$query = "UPDATE users SET avatar='$target_file', email='$email', bio='$bio' WHERE username='$user';";
+									$result=pg_query($conn,$query);
+									header("Location: userAdmin.php");
+									exit();		
+								}
+							}
 						}
+					} else {
+						echo "<p>Email regex not good</p><br>";
 					}
+				} else {
+					echo "<p>Email is Required</p><br>";
 				}
 			}
+			function sanitize($input){
+				$input = trim($input);
+				$input = stripslashes($input);
+				$input = htmlspecialchars($input);
+				return $input;
+			}
+			
 			function alert($msg) {
 				echo "<script type='text/javascript'>alert('$msg');</script>";
 			}
