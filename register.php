@@ -111,7 +111,7 @@
 						Password:
 					</td>
 					<td>
-						<input type="text" name="password"/>
+						<input type="password" name="password"/>
 					</td>
 				</tr>
 				<tr>
