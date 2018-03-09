@@ -60,6 +60,10 @@
 		$conn = pg_connect("host=localhost dbname=a2 user=postgres password=password");
 		$user = $_POST['hiddenUser'];
 		if (isset($_POST["submit"])) {
+			//delete from logs
+			$query = "DELETE FROM logs WHERE username='$user';";
+			$result = pg_query($query);
+			//delete from users
 			$query = "DELETE FROM users WHERE username='$user';";
 			$result = pg_query($query);
 			header("Location: userAdmin.php");

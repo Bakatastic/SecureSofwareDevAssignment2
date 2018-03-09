@@ -69,7 +69,7 @@
 			$directory = "images/";
 			$user = $_POST['hiddenUser'];
 			$email = $_POST["newEmail"];
-			$bio = htmlentities($_POST["newBio"]);
+			$bio = sanitize($bio);
 			$target_file = $directory . basename($_FILES['imgUpload']['name']);
 			$checkFile = basename($_FILES['imgUpload']['name']);
 			
@@ -79,8 +79,6 @@
 					$email = sanitize($email);
 					//Check input
 					if(preg_match("/^[a-zA-Z0-9.!#$%&'*+=?^_`{|}~-]{1,}@[a-zA-Z0-9]{1,}\.[a-zA-Z0-9]{1,}$/", $email)){
-						$emailErr = "Enter a proper email<br>";
-						$fail = 1;
 									
 						if ($checkFile == "") {
 							$bio = sanitize($bio);
@@ -111,6 +109,7 @@
 			function sanitize($input){
 				$input = trim($input);
 				$input = stripslashes($input);
+				$input = str_replace("'",'"', $input);
 				$input = htmlspecialchars($input);
 				return $input;
 			}

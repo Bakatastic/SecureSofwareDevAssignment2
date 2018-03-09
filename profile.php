@@ -90,7 +90,8 @@
 		$directory = "images/";
 		$user = $_SESSION['username'];
 		$email = $_POST["newEmail"];
-		$bio = htmlentities($_POST["newBio"]);
+		//$bio = htmlentities($_POST["newBio"]);
+		$bio = sanitize($_POST["newBio"]);
 		$target_file = $directory . basename($_FILES['imgUpload']['name']);
 		$checkFile = basename($_FILES['imgUpload']['name']);
 
@@ -114,65 +115,67 @@
 				$email = sanitize($email);
 				//Check input
 				if(preg_match("/^[a-zA-Z0-9.!#$%&'*+=?^_`{|}~-]{1,}@[a-zA-Z0-9]{1,}\.[a-zA-Z0-9]{1,}$/", $email)){
-							
-				//checks the file if empty or not. if empty don't insert new file
-				if ($checkFile == "") {
-					$query = "UPDATE users SET email='$email', bio='$bio' WHERE username='$user';";
-					$result=pg_query($conn,$query);
-				} else {
-					$fileInfo = getimagesize($_FILES["imgUpload"]["tmp_name"]);
-					$imageType = $fileInfo[2];
-					if (in_array($imageType, array(IMAGETYPE_GIF , IMAGETYPE_JPEG ,IMAGETYPE_PNG , IMAGETYPE_BMP))) {
-						if (move_uploaded_file($_FILES["imgUpload"]["tmp_name"], $target_file)) {
-							$query = "UPDATE users SET avatar='$target_file', email='$email', bio='$bio' WHERE username='$user';";
-							$result=pg_query($conn,$query);
-						}
+					//checks the file if empty or not. if empty don't insert new file
+					if ($checkFile == "") {
+						$query = "UPDATE users SET email='$email', bio='$bio' WHERE username='$user';";
+						echo $query;
+						$result=pg_query($conn,$query);
 					} else {
-						alert("bad file");
+						$fileInfo = getimagesize($_FILES["imgUpload"]["tmp_name"]);
+						$imageType = $fileInfo[2];
+						if (in_array($imageType, array(IMAGETYPE_GIF , IMAGETYPE_JPEG ,IMAGETYPE_PNG , IMAGETYPE_BMP))) {
+							if (move_uploaded_file($_FILES["imgUpload"]["tmp_name"], $target_file)) {
+								$query = "UPDATE users SET avatar='$target_file', email='$email', bio='$bio' WHERE username='$user';";
+								$result=pg_query($conn,$query);
+							}
+						} else {
+							alert("bad file");
+						}
 					}
-				}
-			}
-		} else if (isset($_POST["changePassword"])){
-			$fail = 0;
-			if(empty($_POST["newPassword"])){
-				$passwordErr = "Password is required<br>";
-				$fail = 1;
-			}
-			else{
-				$password = sanitize($_POST["newPassword"]);
-				$confirmPassword = sanitize($_POST["confirmPassword"]);
-				//Check input
-				if(!preg_match("/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,40}$/", $password)){
-					$passwordErr = "Enter a password with at least 8 letters and numbers<br>";
+				}	
+			} else if (isset($_POST["changePassword"])) {
+				$fail = 0;
+				if(empty($_POST["newPassword"])){
+					$passwordErr = "Password is required<br>";
 					$fail = 1;
+				}
+				else{
+					$password = sanitize($_POST["newPassword"]);
+					$confirmPassword = sanitize($_POST["confirmPassword"]);
+					//Check input
+					if(!preg_match("/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,40}$/", $password)){
+						$passwordErr = "Enter a password with at least 8 letters and numbers<br>";
+						$fail = 1;
+					}
+					
+					if ($password != $confirmPassword)
+					{
+						$passwordErr = "Passwords do not match<br>";
+						$fail = 1;
+					}
+					//Encrypt
+					$password = md5($password . "AmazingSalt");			
 				}
 				
-				if ($password != $confirmPassword)
+				//Add to database if regex check passes
+				if($fail == 0){
+					alert("password Changed");
+					$_SESSION["Change"] = 1;
+					$_SESSION["fromProfile"] = 0;
+					$_SESSION["newPassword"] = $password;
+					header("Location: login.php");
+					exit();		
+				} else 
 				{
-					$passwordErr = "Passwords do not match<br>";
-					$fail = 1;
+					alert($passwordErr);
 				}
-				//Encrypt
-				$password = md5($password . "AmazingSalt");			
-			}
-			
-			//Add to database if regex check passes
-			if($fail == 0){
-				alert("password Changed");
-				$_SESSION["Change"] = 1;
-				$_SESSION["fromProfile"] = 0;
-				$_SESSION["newPassword"] = $password;
-				header("Location: login.php");
-				exit();		
-			} else 
-			{
-				alert($passwordErr);
 			}
 		}
 		
 		function sanitize($input){
 			$input = trim($input);
 			$input = stripslashes($input);
+			//$input = str_replace("'",'"', $input);
 			$input = htmlspecialchars($input);
 			return $input;
 		}
