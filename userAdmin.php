@@ -14,6 +14,13 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="styles/style.css">
+	<style>
+		table {
+			display: block;
+			overflow-x: auto;
+		}
+	</style>
 	</head>
 	<body>
 	
@@ -26,7 +33,6 @@
 				<li><a href="visitorBlog.php">Visitor Blog</a></li>
 				<li><a href="login.php">Logout</a></li>
 			</ul>
-		  </div>
 		</nav>		
 		<div>
 			<table class='table'>
@@ -37,7 +43,7 @@
 					<th>Admin</th>
 					<th>Approved</th>
 					<th>Locked</th>
-					<th>Failed Attempts</th>
+					<th>Attempts</th>
 					<th>Activated</th>
 					<th></th>
 					<th></th>

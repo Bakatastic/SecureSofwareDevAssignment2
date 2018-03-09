@@ -8,27 +8,23 @@
 <html>
 	<head>
 	<title>New Post</title>
-	<style type="text/css">
-		ul {
-			list-style-type: none;
-			margin: 0;
-			padding: 0;
-		}
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="styles/style.css">
 
-		li {
-			display: inline;
-		}
-	</style>	
 	</head>
 	<body>
-		<ul>
-			<li><a href="postManagement.php">Post Management</a></li>
-			<li><a href="profile.php">Profile</a></li>
-			<li><a href="newPost.php">New Post</a></li>
-			<li><a href="userAdmin.php">User Admin</a></li>
-			<li><a href="visitorBlog.php">Visitor Blog</a></li>
-			<li><a href="login.php">Logout</a></li>
-		</ul>
+		<nav class="navbar navbar-default">
+			<ul class="nav navbar-nav">
+				<li><a href="postManagement.php">Post Management</a></li>
+				<li><a href="profile.php">Profile</a></li>
+				<li><a href="newPost.php">New Post</a></li>
+				<li><a href="userAdmin.php">User Admin</a></li>
+				<li><a href="visitorBlog.php">Visitor Blog</a></li>
+				<li><a href="login.php">Logout</a></li>
+			</ul>
+		</nav>	
 		<h1>New Post</h1>
 		<?php
 			//Set variables to empty values
@@ -102,33 +98,22 @@
 			}
 		?>
 		" method="POST" id="newpost">
-				<table>
-					<tr>
-						<td align=right>
-							Post:
-						</td>
-						<td>
-							<textarea name="posttext" form="newpost" rows="5" cols="50"><?php
-								//If editing, grab all text from db
-								if($_GET["id"]){
-									$result = pg_query($conn, "SELECT * FROM posts WHERE postid = '$_GET[id]' AND username = '$_SESSION[username]'");
-									while($row = pg_fetch_row($result)){
-										
-										echo $row[1];
-									}
-								}
-							?>
-							</textarea>
-						</td>
-					</tr>
-					<tr>
-						<td>
-						</td>
-						<td align=center>
-							<input type="submit"/>
-						</td>
-					</tr>
-				</table>
+				<div class="form-group">
+
+					<textarea name="posttext" form="newpost" class="form-control" rows="5" cols="50"><?php
+						//If editing, grab all text from db
+						if($_GET["id"]){
+							$result = pg_query($conn, "SELECT * FROM posts WHERE postid = '$_GET[id]' AND username = '$_SESSION[username]'");
+							while($row = pg_fetch_row($result)){
+								
+								echo $row[1];
+							}
+						}
+					?>
+					</textarea>
+					<br>
+					<input type="submit" class="btn"/>
+				</div>
 			</form>
 			<br>
 			<?php

@@ -9,6 +9,10 @@
 		<title>
 			Register
 		</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="styles/style.css">
 	</head>
 	<body>
 		<h1>Create New User</h1>
@@ -95,42 +99,21 @@
 				echo "<script type='text/javascript'>alert('$msg');</script>";
 			}
 		?>
-		<table>
 			<!-- Will redirect to self-->
-			<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST">
-				<tr>
-					<td align=right>
-						Username:
-					</td>
-					<td>
-						<input type="text" name="username"/>
-					</td>
-				</tr>
-				<tr>
-					<td align=right>
-						Password:
-					</td>
-					<td>
-						<input type="password" name="password"/>
-					</td>
-				</tr>
-				<tr>
-					<td align=right>
-						Email Address:
-					</td>
-					<td>
-						<input type="text" name="email"/>
-					</td>
-				</tr>
-				<tr>
-					<td>
-					</td>
-					<td align=center>
-						<input type="submit"/>
-					</td>
-				</tr>
-			</form>
-		</table>
+		<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST">
+			<div class="form-group">
+				<label for='userInput'>Username: </label>
+				<input type="text" id="userInput" name="username" class="form-control"/>
+				<br>
+				<label for='passInput'>Password: </label>
+				<input type="password" id='passInput' name="password" class="form-control"/>
+				<br>
+				<label for='emailInput'>Email Address: </label>
+				<input type="text" id="emailInput" name="email" class="form-control"/>
+				<br>
+				<input type="submit" class='btn'/>
+			</div>
+		</form>
 		<?php
 			echo $usernameErr;
 			echo $passwordErr;

@@ -7,37 +7,30 @@
 <html>
 	<head>
 	<title>Activate User</title>
-	<style type="text/css">
-		ul {
-			list-style-type: none;
-			margin: 0;
-			padding: 0;
-		}
-
-		li {
-			display: inline;
-		}
-		
-		input[type=submit] {
-			width: 20em;
-		}
-	</style>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="styles/style.css">
 	</head>
 	<body>
-		<ul>
-			<li><a href="postManagement.php">Post Management</a></li>
-			<li><a href="profile.php">Profile</a></li>
-			<li><a href="newPost.php">New Post</a></li>
-			<li><a href="userAdmin.php">User Admin</a></li>
-			<li><a href="visitorBlog.php">Visitor Blog</a></li>
-			<li><a href="login.php">Logout</a></li>
-		</ul>
+		<nav class="navbar navbar-default">
+			<ul class="nav navbar-nav">
+				<li><a href="postManagement.php">Post Management</a></li>
+				<li><a href="profile.php">Profile</a></li>
+				<li><a href="newPost.php">New Post</a></li>
+				<li><a href="userAdmin.php">User Admin</a></li>
+				<li><a href="visitorBlog.php">Visitor Blog</a></li>
+				<li><a href="login.php">Logout</a></li>
+			</ul>
+		</nav>	
 		
 		<div>
 			<h3>Activate <?php echo $_GET['username'] ?></h3>
 			<form action="activateUser.php" method="post" >
-				<input type="submit" width='20px'  value="Yes" name='submit' />
-				<input type="hidden" name="hiddenUser" value="<?php echo $_GET['username'] ?>" />
+				<div class="form-group">
+					<input type="submit" width='20px' class="btn" value="Yes" name='submit' />
+					<input type="hidden" name="hiddenUser" value="<?php echo $_GET['username'] ?>" />
+				</div>
 			</form>
 		</div>
 		<?php 

@@ -34,7 +34,6 @@
 				<li><a href="visitorBlog.php">Visitor Blog</a></li>
 				<li><a href="login.php">Logout</a></li>
 			</ul>
-		  </div>
 		</nav>	
 		<h3>User: <?php echo $_SESSION["username"] ?></h3>
 		<?php $conn = pg_connect("host=localhost dbname=a2 user=postgres password=password");
@@ -118,42 +117,42 @@
 						}
 					}
 				}	
-			} else if (isset($_POST["changePassword"])) {
-				$fail = 0;
-				if(empty($_POST["newPassword"])){
-					$passwordErr = "Password is required<br>";
+			} 
+		} else if (isset($_POST["changePassword"])) {
+			$fail = 0;
+			if(empty($_POST["newPassword"])){
+				$passwordErr = "Password is required<br>";
+				$fail = 1;
+			}
+			else{
+				$password = sanitize($_POST["newPassword"]);
+				$confirmPassword = sanitize($_POST["confirmPassword"]);
+				//Check input
+				if(!preg_match("/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,40}$/", $password)){
+					$passwordErr = "Enter a password with at least 8 letters and numbers<br>";
 					$fail = 1;
 				}
-				else{
-					$password = sanitize($_POST["newPassword"]);
-					$confirmPassword = sanitize($_POST["confirmPassword"]);
-					//Check input
-					if(!preg_match("/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,40}$/", $password)){
-						$passwordErr = "Enter a password with at least 8 letters and numbers<br>";
-						$fail = 1;
-					}
-					
-					if ($password != $confirmPassword)
-					{
-						$passwordErr = "Passwords do not match<br>";
-						$fail = 1;
-					}
-					//Encrypt
-					$password = md5($password . "AmazingSalt");			
-				}
 				
-				//Add to database if regex check passes
-				if($fail == 0){
-					alert("password Changed");
-					$_SESSION["Change"] = 1;
-					$_SESSION["fromProfile"] = 0;
-					$_SESSION["newPassword"] = $password;
-					header("Location: login.php");
-					exit();		
-				} else 
+				if ($password != $confirmPassword)
 				{
-					alert($passwordErr);
+					$passwordErr = "Passwords do not match<br>";
+					$fail = 1;
 				}
+				//Encrypt
+				$password = md5($password . "AmazingSalt");			
+			}
+			
+			//Add to database if regex check passes
+			if($fail == 0){
+				alert("password Changed");
+				$_SESSION["Change"] = 1;
+				$_SESSION["fromProfile"] = 0;
+				$_SESSION["newPassword"] = $password;
+				header("Location: login.php");
+				exit();		
+			} else 
+			{
+				alert($passwordErr);
 			}
 		}
 		

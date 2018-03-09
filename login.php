@@ -13,8 +13,10 @@
 <html>
 	<head>
 	<title>Login</title>
-	<style type="text/css">
-	</style>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="styles/style.css">
 	</head>
 	<body>
 		<h1>Login</h1>
@@ -128,41 +130,20 @@
 				return $input;
 			}
 		?>
-			<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST">
-				<table>
-					<tr>
-						<td align=right>
-							Username:
-						</td>
-						<td>
-							<input type="text" name="username"/>
-						</td>
-					</tr>
-					<tr>
-						<td align=right>
-							Password:
-						</td>
-						<td>
-							<input type="password" name="password"/>
-						</td>
-					</tr>
-					<tr>
-						<td>
-						</td>
-						<td align=center>
-							<input type="submit"/>
-						</td>
-					</tr>
-				</table>
-			</form>
-			<?php
-				echo $otherErr;
-				echo $usernameErr;
-				echo $passwordErr;
-			?>
-			<br>
-			Don't have an account? <a href="register.php">Register!</a>
-			<br>
-			<a href="forgot.php">Forgot Password</a>
+		<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST">
+			<div class="form-group">
+				<label for='inputUsername'>Username:</label>
+				<input type="text" name="username" id="inputUsername" class="form-control"/>
+				<br>
+				<label for='inputPassword'>Password:</label> 
+				<input type="password" name="password" id="inputPassword" class="form-control"/>
+				<br>
+				<input type="submit" name="submit" value='Login' class="btn"/>
+			</div>
+		</form>
+		<br>
+		Don't have an account? <a href="register.php">Register!</a>
+		<br>
+		<a href="forgot.php">Forgot Password</a>
 	</body>
 </html>

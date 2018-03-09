@@ -10,28 +10,24 @@
 ?>
 <html>
 	<head>
-	<title></title>
-	<style type="text/css">
-		ul {
-			list-style-type: none;
-			margin: 0;
-			padding: 0;
-		}
+	<title>Edit User</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="styles/style.css">
 
-		li {
-			display: inline;
-		}
-	</style>
 	</head>
 	<body>
-		<ul>
-			<li><a href="postManagement.php">Post Management</a></li>
-			<li><a href="profile.php">Profile</a></li>
-			<li><a href="newPost.php">New Post</a></li>
-			<li><a href="userAdmin.php">User Admin</a></li>
-			<li><a href="visitorBlog.php">Visitor Blog</a></li>
-			<li><a href="login.php">Logout</a></li>
-		</ul>
+		<nav class="navbar navbar-default">
+			<ul class="nav navbar-nav">
+				<li><a href="postManagement.php">Post Management</a></li>
+				<li><a href="profile.php">Profile</a></li>
+				<li><a href="newPost.php">New Post</a></li>
+				<li><a href="userAdmin.php">User Admin</a></li>
+				<li><a href="visitorBlog.php">Visitor Blog</a></li>
+				<li><a href="login.php">Logout</a></li>
+			</ul>
+		</nav>	
 		<?php $conn = pg_connect("host=localhost dbname=a2 user=postgres password=password");
 		$val = $_SESSION['username'];
 		$result = pg_query($conn, "SELECT * FROM users WHERE username='" . $_GET['username'] ."';");
@@ -41,35 +37,28 @@
 			<h3><?php echo $_GET['username']?></h3>
 			<input type="hidden" name="hiddenUser" value="<?php echo $_GET['username']?>">
 			<input type="hidden" name="imgSrc" value="<?php echo $_GET['avatar']?>">
-			<table>
-				<tr>
-					<td>Avatar: </td>
-					<td><img height='30px' width='30px' src='<?php if (isset($_POST["submit"])){ echo "images/" . $_POST["imgSrc"]; } else { echo $row[3]; } ?>'/></td>
-				</tr>
-				<tr>
-					<td>Upload file:</td>
-					<td><input type="file" name="imgUpload" id="imgUpload" ></td>
-				</tr>
-				<tr>
-					<td>Email: </td>
-					<td><input type='text' value='<?php if (isset($_POST["submit"])){ echo $_POST['newEmail']; } else { echo $row[2]; } ?>' name='newEmail'></td>
-				</tr>
-				<tr>
-					<td>Bio: </td>
-					<td><textarea id='newBio' name="newBio"><?php if (isset($_POST["submit"])){ echo $_POST['newBio']; } else { echo $row[4]; } ?></textarea></td>
-				</tr>
-				<tr>
-					<td><input type="submit" name="submit" /></td>
-					<td></td>
-				</tr>			
-			</table>
+			<div class="form-group">
+				<label>Avatar: </label>
+				<br>
+				<img height='50px' width='50px' src='<?php if (isset($_POST["submit"])){ echo "images/" . basename($_FILES['imgUpload']['name']); } else { echo $row[3]; } ?>'/>
+				<input type="file" name="imgUpload" id="imgUpload" accept="image/*" >
+			</div>
+			<div class="form-group">
+				<label for='emailInput'>Email:</label>
+				<input id='emailInput' type='text' class="form-control" value='<?php if (isset($_POST["submit"])){ echo $_POST['newEmail']; } else { echo $row[2]; } ?>' name='newEmail'>
+				<br>
+				<label for='newBio'>Bio:</label> 
+				<textarea id='newBio' name="newBio" class="form-control"><?php if (isset($_POST["submit"])){ echo $_POST['newBio']; } else { echo $row[4]; } ?></textarea>
+				<br>
+				<input type="submit" name="submit" value='Update' class="btn"/>
+			</div>
 		</form>
 		</div>
 		<?php 
 			$directory = "images/";
 			$user = $_POST['hiddenUser'];
 			$email = $_POST["newEmail"];
-			$bio = sanitize($bio);
+			$bio = sanitize($_POST["newBio"]);
 			$target_file = $directory . basename($_FILES['imgUpload']['name']);
 			$checkFile = basename($_FILES['imgUpload']['name']);
 			
