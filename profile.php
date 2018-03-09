@@ -67,7 +67,7 @@
 				<label>Confirm Password: </label>
 				<input type='password' name='confirmPassword' id='confirmPassword' class="form-control">
 				<br>
-				<input type="submit" name="changePassword" />
+				<input type="submit" name="changePassword" class="btn"/>
 			</div>
 		</form>
 	</body>
