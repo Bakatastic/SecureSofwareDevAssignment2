@@ -39,6 +39,9 @@
 				$conn = pg_connect("host=localhost dbname=a2 user=postgres password=password");
 				$query = "UPDATE users SET activated='true', failedattempts=0, accountlock='f' WHERE username='$user';";
 				$result = pg_query($conn,$query);
+				
+				$query = "insert into logs (logtext, username) values ('$user activated','$user')";
+				$result = pg_query($conn,$query);
 				echo $query;
 				header("Location: login.php");
 				exit();				
