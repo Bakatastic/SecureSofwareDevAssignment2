@@ -10,31 +10,26 @@
 ?>
 <html>
 	<head>
-	<title></title>
-	<style type="text/css">
-		ul {
-			list-style-type: none;
-			margin: 0;
-			padding: 0;
-		}
-
-		li {
-			display: inline;
-		}
-	</style>
+	<title>User Administrator</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	</head>
 	<body>
-		<ul>
-			<li><a href="postManagement.php">Post Management</a></li>
-			<li><a href="profile.php">Profile</a></li>
-			<li><a href="newPost.php">New Post</a></li>
-			<li><a href="userAdmin.php">User Admin</a></li>
-			<li><a href="visitorBlog.php">Visitor Blog</a></li>
-			<li><a href="login.php">Logout</a></li>
-		</ul>
-		
+	
+		<nav class="navbar navbar-default">
+			<ul class="nav navbar-nav">
+				<li><a href="postManagement.php">Post Management</a></li>
+				<li><a href="profile.php">Profile</a></li>
+				<li><a href="newPost.php">New Post</a></li>
+				<li><a href="userAdmin.php">User Admin</a></li>
+				<li><a href="visitorBlog.php">Visitor Blog</a></li>
+				<li><a href="login.php">Logout</a></li>
+			</ul>
+		  </div>
+		</nav>		
 		<div>
-			<table border="1">
+			<table class='table'>
 				<tr>
 					<th>Username</th>
 					<th>Email</th>
@@ -44,6 +39,8 @@
 					<th>Locked</th>
 					<th>Failed Attempts</th>
 					<th>Activated</th>
+					<th></th>
+					<th></th>
 				</tr>
 				<?php $conn = pg_connect("host=localhost dbname=a2 user=postgres password=password");
 					$result = pg_query($conn, "SELECT * FROM users;");

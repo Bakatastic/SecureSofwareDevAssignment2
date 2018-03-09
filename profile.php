@@ -7,17 +7,10 @@
 <html>
 	<head>
 	<title>Profile</title>
-	<style type="text/css">
-		ul {
-			list-style-type: none;
-			margin: 0;
-			padding: 0;
-		}
-
-		li {
-			display: inline;
-		}
-	</style>	
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="styles/style.css">
 	<?php 
 		$_SESSION['fromProfile'] = 0;
 		if (($_SESSION["username"]) == null) {
@@ -32,58 +25,51 @@
 	?>
 	</head>
 	<body>
-		<ul>
-			<li><a href="postManagement.php">Post Management</a></li>
-			<li><a href="profile.php">Profile</a></li>
-			<li><a href="newPost.php">New Post</a></li>
-			<li><a href="userAdmin.php">User Admin</a></li>
-			<li><a href="visitorBlog.php">Visitor Blog</a></li>
-			<li><a href="login.php">Logout</a></li>
-		</ul>
+		<nav class="navbar navbar-default">
+			<ul class="nav navbar-nav">
+				<li><a href="postManagement.php">Post Management</a></li>
+				<li><a href="profile.php">Profile</a></li>
+				<li><a href="newPost.php">New Post</a></li>
+				<li><a href="userAdmin.php">User Admin</a></li>
+				<li><a href="visitorBlog.php">Visitor Blog</a></li>
+				<li><a href="login.php">Logout</a></li>
+			</ul>
+		  </div>
+		</nav>	
 		<h3>User: <?php echo $_SESSION["username"] ?></h3>
 		<?php $conn = pg_connect("host=localhost dbname=a2 user=postgres password=password");
 		$val = $_SESSION['username'];
 		$result = pg_query($conn, "SELECT * FROM users WHERE username='" . $val ."';");
 		$row = pg_fetch_row($result);?>
 		<form action="profile.php" method="post" enctype="multipart/form-data" >
-			<table>
-				<tr>
-					<td>Avatar: </td>
-					<td><img height='30px' width='30px' src='<?php if (isset($_POST["submit"])){ echo "images/" . basename($_FILES['imgUpload']['name']); } else { echo $row[3]; } ?>'/></td>
-				</tr>
-				<tr>
-					<td>Upload file:</td>
-					<td><input type="file" name="imgUpload" id="imgUpload" accept="image/*" ></td>
-				</tr>
-				<tr>
-					<td>Email: </td>
-					<td><input type='text' value='<?php if (isset($_POST["submit"])){ echo $_POST['newEmail']; } else { echo $row[2]; } ?>' name='newEmail'></td>
-				</tr>
-				<tr>
-					<td>Bio: </td>
-					<td><textarea id='newBio' name="newBio"><?php if (isset($_POST["submit"])){ echo $_POST['newBio']; } else { echo $row[4]; } ?></textarea></td>
-				</tr>
-				<tr>
-					<td><input type="submit" name="submit" /></td>
-					<td></td>
-				</tr>			
-			</table>
+			<div class="form-group">
+				<label>Avatar: </label>
+				<br>
+				<img height='50px' width='50px' src='<?php if (isset($_POST["submit"])){ echo "images/" . basename($_FILES['imgUpload']['name']); } else { echo $row[3]; } ?>'/>
+				<input type="file" name="imgUpload" id="imgUpload" accept="image/*" >
+			</div>
+			<div class="form-group">
+				<label for='emailInput'>Email:</label>
+				<input id='emailInput' type='text' class="form-control" value='<?php if (isset($_POST["submit"])){ echo $_POST['newEmail']; } else { echo $row[2]; } ?>' name='newEmail'>
+				<br>
+				<label for='newBio'>Bio:</label> 
+				<textarea id='newBio' name="newBio" class="form-control"><?php if (isset($_POST["submit"])){ echo $_POST['newBio']; } else { echo $row[4]; } ?></textarea>
+				<br>
+				<input type="submit" name="submit" value='Update' class="btn"/>
+			</div>
 		</form>
+		<br><br><br>
 		<form action="profile.php" method="post" >
-			<table>
-				<tr>
-					<td>New Password</td>
-					<td><input type="password" name="newPassword" id="newPassword" ></td>
-				</tr>
-				<tr>
-					<td>Confirm Password: </td>
-					<td><input type='password' name='confirmPassword' id='confirmPassword'></td>
-				</tr>
-				<tr>
-					<td><input type="submit" name="changePassword" /></td>
-					<td></td>
-				</tr>			
-			</table>
+			<div class="form-group">
+				<h3>Change Password</h3>
+				<label>New Password: </label>
+				<input type="password" name="newPassword" id="newPassword" class="form-control">
+				<br>
+				<label>Confirm Password: </label>
+				<input type='password' name='confirmPassword' id='confirmPassword' class="form-control">
+				<br>
+				<input type="submit" name="changePassword" />
+			</div>
 		</form>
 	</body>
 	<?php 
@@ -118,7 +104,6 @@
 					//checks the file if empty or not. if empty don't insert new file
 					if ($checkFile == "") {
 						$query = "UPDATE users SET email='$email', bio='$bio' WHERE username='$user';";
-						echo $query;
 						$result=pg_query($conn,$query);
 					} else {
 						$fileInfo = getimagesize($_FILES["imgUpload"]["tmp_name"]);
