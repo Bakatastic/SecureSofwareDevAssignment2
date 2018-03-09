@@ -30,7 +30,7 @@ The main blog page. Visitors to the blog should be able to view a summary of rec
 		</ul>
 		<?php
 		$conn = pg_connect("host=localhost dbname=a2 user=postgres password=password");
-		$result = pg_query($conn, "SELECT posts.*, users.avatar FROM posts INNER JOIN users ON posts.username = users.username ORDER BY postid DESC;");
+		$result = pg_query($conn, "SELECT posts.*, users.avatar FROM posts INNER JOIN users ON posts.username = users.username AND posts.postid = '$_GET[id]';");
 		while($row = pg_fetch_row($result)){
 			$post = htmlspecialchars_decode($row[1]);
 			echo "<a href='blogDetails.php?id=" . $row[0] . "' style='text-decoration:none;color:black'><div style='border-style:solid; border-width:1px; padding:5px;'> <img src='" . $row[3] . "' width='50px' height='50px' >" . $row[2] . "<br>" . $post . "</div></a><br>";
