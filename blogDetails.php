@@ -28,6 +28,7 @@ The main blog page. Visitors to the blog should be able to view a summary of rec
 		$result = pg_query($conn, "SELECT posts.*, users.avatar FROM posts INNER JOIN users ON posts.username = users.username AND posts.postid = '$_GET[id]';");
 		while($row = pg_fetch_row($result)){
 			$post = htmlspecialchars_decode($row[1]);
+			$post = strip_tags($post, '<table><tr><td><i><b><a><u><div><ul><li><h1><h2><h3><h4><h5><h6><br><cite><code><dl><dt><em><img><ol><p><q><section><sub><sup><video>');
 			echo "<a href='blogDetails.php?id=" . $row[0] . "' style='text-decoration:none;color:black'><div style='border-style:solid; border-width:1px; padding:5px;'> <img src='" . $row[3] . "' width='50px' height='50px' >" . $row[2] . "<br>" . $post . "</div></a><br>";
 		}
 		?>
