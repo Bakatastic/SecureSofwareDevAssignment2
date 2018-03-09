@@ -104,7 +104,7 @@
 						}
 						else{
 							//$otherErr = "Incorrect username or password";
-							$otherErr = "$username . $user[0] . $password . $user[1]";
+							//$otherErr = "$username . $user[0] . $password . $user[1]";
 							//Increment failed login attempts. Lock if 5 fails
 							//$result = pg_query($conn, "SELECT * FROM users");
 							if($user[8]<4){ //It says 4 here, but in practice, it's 5.
@@ -141,6 +141,11 @@
 				<input type="submit" name="submit" value='Login' class="btn"/>
 			</div>
 		</form>
+		<?php
+			echo $otherErr;
+			echo $usernameErr;
+			echo $passwordErr;
+		?>
 		<br>
 		Don't have an account? <a href="register.php">Register!</a>
 		<br>
