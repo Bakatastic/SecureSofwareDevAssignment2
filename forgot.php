@@ -36,7 +36,8 @@
 				//Matches email and resets password
 				if($fail == 0){
 					//The password always resets to 'password1' for now. Ideally, it should be randomly generated.
-					$password = md5(sanitize("password1") . "AmazingSalt");
+					$password = hash('sha256', 'password1' . 'AwesomeSalt');
+					//$password = md5(sanitize("password1") . "AmazingSalt");
 					$conn = pg_connect("host=localhost dbname=a2 user=postgres password=password");
 									$result = pg_query($conn, "UPDATE users SET password = '$password' WHERE email = '$_POST[email]'");
 					alert("Password reset!");

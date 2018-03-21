@@ -139,7 +139,8 @@
 					$fail = 1;
 				}
 				//Encrypt
-				$password = md5($password . "AmazingSalt");			
+				$password = hash('sha256', $password . 'AwesomeSalt');
+				//$password = md5($password . "AmazingSalt");			
 			}
 			
 			//Add to database if regex check passes

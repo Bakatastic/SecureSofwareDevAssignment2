@@ -4,7 +4,7 @@ CREATE DATABASE a2;
 
 CREATE TABLE users (
     username		VARCHAR(20)		NOT NULL Primary Key,
-    password		VARCHAR(40)		NOT NULL,
+    password		VARCHAR(256)	NOT NULL,
 	email			VARCHAR(100)	NOT NULL,
     avatar			VARCHAR(40)		NOT NULL,
 	bio				VARCHAR(100),

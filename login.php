@@ -55,7 +55,8 @@
 						$fail = 1;
 					}
 					//Encrypt
-					$password = md5($password . "AmazingSalt");
+					$password = hash('sha256', $password . 'AwesomeSalt');
+					//$password = md5($password . "AmazingSalt");
 				}
 				
 				//Add to database if regex check passes
@@ -103,7 +104,7 @@
 							}
 						}
 						else{
-							//$otherErr = "Incorrect username or password";
+							$otherErr = "Incorrect username or password";
 							//$otherErr = "$username . $user[0] . $password . $user[1]";
 							//Increment failed login attempts. Lock if 5 fails
 							//$result = pg_query($conn, "SELECT * FROM users");
