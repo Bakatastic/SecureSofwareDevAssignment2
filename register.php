@@ -50,7 +50,8 @@
 						$fail = 1;
 					}
 					//Encrypt
-					$password = md5($password . "AmazingSalt");
+					$password = hash('sha256', $password . 'AwesomeSalt');
+					//$password = md5($password . "AmazingSalt");
 				}
 				
 				//Email regex
